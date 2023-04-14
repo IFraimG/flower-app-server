@@ -4,13 +4,13 @@ const cookieParser = require('cookie-parser');
 const logger = require('morgan');
 const cors = require('cors')
 const bodyParser = require('body-parser')
-// require("./configs/db")
+require("./configs/db")
 require("dotenv").config()
 
-// const indexRouter = require('./routes/index');
-// const gettersRouter = require('./routes/getters');
-// const settersRouter = require('./routes/setters');
-// const advertisementsRouter = require('./routes/advertisements');
+const indexRouter = require('./routes/index');
+const gettersRouter = require('./routes/getters');
+const settersRouter = require('./routes/setters');
+const advertisementsRouter = require('./routes/advertisements');
 
 const app = express();
 app.use(cors())
@@ -23,10 +23,10 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use(bodyParser.urlencoded({ extended: false }))
 app.use(bodyParser.json())
 
-// app.use('/', indexRouter);
-// app.use('/getters', gettersRouter);
-// app.use('/setters', settersRouter);
-// app.use('/advertisements', advertisementsRouter);
+app.use('/', indexRouter);
+app.use('/getters', gettersRouter);
+app.use('/setters', settersRouter);
+app.use('/advertisements', advertisementsRouter);
 
 
 app.listen(process.env.PORT || 8000, () => console.log("сервер запущен 8000"))

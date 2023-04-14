@@ -5,7 +5,7 @@ require("dotenv").config();
 
 (async function() {
     try {
-        await mongoose.connect(process.env.DB_CONNECT);
+        await mongoose.connect(process.env.DB_CONNECT, { useNewUrlParser: true, useUnifiedTopology: true });
         console.log("Сервер ожидает подключения...");
 
         process.on("SIGINT", async() => {

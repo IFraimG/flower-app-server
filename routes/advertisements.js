@@ -12,6 +12,12 @@ router.get('/get_active', async (req, res) => {
   res.send(result)
 });
 
+router.get("/get_item_by_id/:advertID", async (req, res) => {
+  const result = await Advertisement.findOne({ adversID: res.params.advertID })
+  if (result == null) res.sendStatus(404)
+  else res.send(result)
+})
+
 router.post("/create", async (req, res) => {
   const info = req.body
   const advertisement = new Advertisement({ 

@@ -18,7 +18,7 @@ router.post("/login", async (req, res) => {
         phone: user.phone,
         login: user.login
       }, jwtsecret)
-      res.send(["jwt", "Bearer " + token, user])
+      res.send({token: "Bearer " + token, getter: user})
     }
   }
 })
@@ -34,9 +34,9 @@ router.post('/signup', async (req, res, next) => {
       phone: user.phone,
       login: user.login
     }, jwtsecret)
-    res.send(["jwt", "Bearer " + token, user])
+    res.send({token: "Bearer " + token, getter: user})
   }
-  else res.sendStatus(400).send("Такой пользователь уже существует")
+  else res.sendStatus(400).send({token: ""})
 })
 
 router.get("/test", passport.authenticate('jwt', { session: false }), async (req, res) => {

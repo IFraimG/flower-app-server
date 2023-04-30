@@ -7,7 +7,7 @@ let passport = require("../configs/passportG.js")
 const bcrypt = require("bcrypt")
 
 router.post("/login", async (req, res) => {
-  let user = await User.findOne({phone: req.body.phone, login: req.body.login}).exec()
+  let user = await User.findOne({login: req.body.login}).exec()
   if (!user) return res.status(404).send({ token: "" })
   else {
     const match = await bcrypt.compare(req.body.password, user.password);

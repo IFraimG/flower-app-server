@@ -8,10 +8,10 @@ const bcrypt = require("bcrypt")
 
 router.post("/login", async (req, res) => {
   let user = await User.findOne({phone: req.body.phone, login: req.body.login}).exec()
-  if (!user) return res.status(404).send("Такого пользователя не существует")
+  if (!user) return res.status(404).send({ token: "" })
   else {
     const match = await bcrypt.compare(req.body.password, user.password);
-    if (!match) return res.status(400).send("Пароль не верный")
+    if (!match) return res.status(400).send({ token: "" })
     else {
       let token = jwt.sign({
         sub: user.X5_ID,

@@ -18,7 +18,7 @@ router.post("/login", async (req, res) => {
         phone: user.phone,
         login: user.login
       }, jwtsecret)
-      res.send({token: "Bearer " + token, setter: user})
+      res.send({token: "Bearer " + token, user: user})
     }
   }
 })
@@ -34,13 +34,13 @@ router.post('/signup', async (req, res, next) => {
       phone: user.phone,
       login: user.login
     }, jwtsecret)
-    res.send({token: "Bearer " + token, setter: user})
+    res.send({token: "Bearer " + token, user: user})
   }
   else res.sendStatus(400).send({token: ""})
 })
 
 router.get("/test", passport.authenticate('jwt', { session: false }), async (req, res) => {
-  res.send("все хорошо")
+  res.send({isAuth: true}).status(200)
 })
 
 module.exports = router;

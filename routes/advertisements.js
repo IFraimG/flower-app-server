@@ -25,14 +25,17 @@ router.post("/create", async (req, res) => {
     fieldDescription: info.desc, 
     listProducts: info.products, 
     authorName: info.authorName,
-    adversID: info.adversID,
+    advertsID: info.advertsID,
     authorID: info.authorID,
     gettingProductID: info.gettingProductID,
     dateOfExpires: info.dateOfExpires
   })
 
   let err = await advertisement.save()
-  if (err) console.log(err);
+  if (err) {
+    console.log(err);
+    return res.sendStatus(400)
+  }
   res.send(advertisement)
 })
 

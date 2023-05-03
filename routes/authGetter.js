@@ -7,7 +7,7 @@ let passport = require("../configs/passportG.js")
 const bcrypt = require("bcrypt")
 
 router.post("/login", async (req, res) => {
-  let user = await User.findOne({login: req.body.login}).exec()
+  let user = await User.findOne({login: req.body.login, phone: req.body.phone}).exec()
   if (!user) return res.status(404).send({ token: "" })
   else {
     const match = await bcrypt.compare(req.body.password, user.password);
@@ -44,4 +44,3 @@ router.get("/test", passport.authenticate('jwt', { session: false }), async (req
 })
 
 module.exports = router;
-// Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJwaG9uZSI6Iis3OTk5OTk5OTkiLCJsb2dpbiI6IklGcmFtZXgiLCJpYXQiOjE2ODI3ODQxMTR9.5kcF0RJI0dWP7mi7xZMg8UoLTLypz0zjF4MlblWDga8

@@ -1,19 +1,38 @@
 const mongoose = require("mongoose")
 
 const AdvertisementSchema = new mongoose.Schema({
-    title: String,
-    fieldDescription: String,
+    title: {
+        type: String,
+        required: true
+    },
+    fieldDescription: {
+        type: String,
+        required: false
+    },
     listProducts: [String],
-    authorName: String,
-    adversID: mongoose.Schema.Types.ObjectId,
+    authorName: {
+        type: String,
+        required: true
+    },
+    advertsID: mongoose.Schema.Types.ObjectId,
     gettingProductID: String,
-    authorID: String,
+    authorID: {
+        type: String,
+        required: true
+    },
     dateOfCreated: {
         type: Date,
         default: Date.now()
     },
     dateOfExpires: Date,
-    isSuccessDone: Boolean
+    isSuccessDone: {
+        type: String,
+        default: false
+    },
+    userDoneID: {
+        type: String, 
+        required: false
+    }
 })
 
 module.exports = mongoose.model("Advertisement", AdvertisementSchema)

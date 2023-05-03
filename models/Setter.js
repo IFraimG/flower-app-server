@@ -14,7 +14,7 @@ const SetterSchema = new mongoose.Schema({
         type: String,
         required: true
     },
-    successHistory: [mongoose.Schema.Types.ObjectId]
+    // successHistory: [mongoose.Schema.Types.ObjectId]
 })
 
 // SetterSchema.methods.encryptPassword = function(password) {

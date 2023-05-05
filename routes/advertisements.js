@@ -27,6 +27,7 @@ router.post("/create", async (req, res) => {
     authorName: info.authorName,
     advertsID: info.advertsID,
     authorID: info.authorID,
+    listProducts: info.listProducts,
     gettingProductID: info.gettingProductID,
     dateOfExpires: info.dateOfExpires
   })
@@ -36,7 +37,7 @@ router.post("/create", async (req, res) => {
     console.log(err);
     return res.sendStatus(400)
   }
-  res.send(advertisement)
+  res.send(advertisement).status(200)
 })
 
 router.delete("/done/:advertID", async (req, res) => {

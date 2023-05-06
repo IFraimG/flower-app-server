@@ -14,6 +14,10 @@ const SetterSchema = new mongoose.Schema({
         type: String,
         required: true
     },
+    market: {
+        type: String,
+        required: false
+    }
     // successHistory: [mongoose.Schema.Types.ObjectId]
 })
 

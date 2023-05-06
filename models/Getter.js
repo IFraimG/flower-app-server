@@ -13,6 +13,10 @@ const GetterSchema = new mongoose.Schema({
     phone: {
         type: String,
         required: true
+    },
+    market: {
+        type: String,
+        required: false
     }
 })
 

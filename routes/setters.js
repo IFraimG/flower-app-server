@@ -8,7 +8,7 @@ router.get('/', function(req, res, next) {
 
 router.put("/done", async (req, res) => {
   try {
-    await Advertisement.findOneAndUpdate({ advertsID: req.body.advertID }, { isDone: true, userDoneID: req.body.userID }, {
+    await Advertisement.findOneAndUpdate({ advertsID: req.body.advertID }, { isSuccessDone: true, userDoneID: req.body.userID }, {
       new: true
     })
     res.sendStatus(200)

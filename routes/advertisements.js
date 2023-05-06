@@ -3,12 +3,12 @@ const router = express.Router();
 const Advertisement = require("../models/Advertisement")
 
 router.get('/get_own_item/:authorID', async (req, res) => {
-  const result = await Advertisement.findOne({ isDone: false, authorID: req.params.authorID })
+  const result = await Advertisement.findOne({ isSuccessDone: false, authorID: req.params.authorID })
   res.send(result)
 });
 
 router.get('/get_active', async (req, res) => {
-  const result = await Advertisement.find({ isDone: false })
+  const result = await Advertisement.find({ isSuccessDone: false })
   res.send(result)
 });
 
@@ -36,8 +36,10 @@ router.post("/create", async (req, res) => {
   if (err) {
     console.log(err);
     return res.sendStatus(400)
+  } else {
+    // let oldAdvertisement = Advertisement.findOne({ authorID: info.authorID, isDone: false, $nor: })
+    // res.send(advertisement).status(200)
   }
-  res.send(advertisement).status(200)
 })
 
 router.delete("/done/:advertID", async (req, res) => {

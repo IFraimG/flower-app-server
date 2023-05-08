@@ -14,7 +14,7 @@ router.post("/login", async (req, res) => {
     if (!match) return res.status(400).send({ token: "" })
     else {
       let token = jwt.sign({
-        sub: user.X5_ID,
+        sub: user._id,
         phone: user.phone,
         login: user.login
       }, jwtsecret)

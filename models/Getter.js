@@ -1,7 +1,6 @@
 const mongoose = require("mongoose")
 
 const GetterSchema = new mongoose.Schema({
-    X5_id: mongoose.Schema.Types.ObjectId,
     login: {
         type: String,
         required: true

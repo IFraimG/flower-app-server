@@ -14,7 +14,7 @@ router.get('/get_active', async (req, res) => {
 });
 
 router.get("/get_item_by_id/:advertID", async (req, res) => {
-  const result = await Advertisement.findOne({ adversID: res.params.advertID })
+  const result = await Advertisement.findOne({ advertsID: res.params.advertID })
   if (result == null) res.sendStatus(404)
   else res.send(result)
 })

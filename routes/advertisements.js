@@ -50,7 +50,7 @@ router.delete("/done/:advertID", async (req, res) => {
 
 router.get("/get_active_by_market", async (req, res) => {
   let users = await Getter.find({ market: req.query.market }).exec()
-  let usersID = users.filter(item => item.X5_id)
+  let usersID = users.filter(item => item._id)
 
   const adverts = []
   for (let id of usersID) {

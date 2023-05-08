@@ -32,5 +32,5 @@ app.use('/advertisements', advertisementsRouter);
 app.use('/auth/getter', authGetterRouter);
 app.use('/auth/setter', authSetterRouter);
 
-// app.listen(process.env.PORT || 36304,  '192.168.0.101', () => console.log("сервер запущен 8000"))
 app.listen(process.env.PORT || 3000, () => console.log("сервер запущен 8000"))
+// app.listen(process.env.PORT || 3000, () => console.log("сервер запущен 8000"))

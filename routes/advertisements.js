@@ -20,26 +20,33 @@ router.get("/get_item_by_id/:advertID", async (req, res) => {
 })
 
 router.post("/create", async (req, res) => {
-  const info = req.body
-  const advertisement = new Advertisement({ 
-    title: info.title, 
-    fieldDescription: info.desc, 
-    listProducts: info.products, 
-    authorName: info.authorName,
-    advertsID: info.advertsID,
-    authorID: info.authorID,
-    listProducts: info.listProducts,
-    gettingProductID: info.gettingProductID,
-    dateOfExpires: info.dateOfExpires
-  })
+  try {
+    await Advertisement.findOneAndDelete({ authorID: info.authorID, isDone: false })
 
-  let err = await advertisement.save()
-  if (err) {
-    console.log(err);
-    return res.sendStatus(400)
-  } else {
-    // let oldAdvertisement = Advertisement.findOne({ authorID: info.authorID, isDone: false, $nor: })
-    // res.send(advertisement).status(200)
+    const info = req.body
+    const advertisement = new Advertisement({ 
+      title: info.title, 
+      fieldDescription: info.desc, 
+      listProducts: info.products, 
+      authorName: info.authorName,
+      advertsID: info.advertsID,
+      authorID: info.authorID,
+      listProducts: info.listProducts,
+      gettingProductID: info.gettingProductID,
+      dateOfExpires: info.dateOfExpires
+    })
+  
+    let err = await advertisement.save()
+    if (err) {
+      console.log(err);
+      return res.sendStatus(400)
+    } else {
+  
+      res.send(advertisement).status(200)
+    }
+  } catch (err) {
+    console.log(err.message);
+    res.sendStatus(400)
   }
 })
 

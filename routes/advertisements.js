@@ -1,6 +1,7 @@
 const express = require('express');
 const router = express.Router();
-const Advertisement = require("../models/Advertisement")
+const Advertisement = require("../models/Advertisement");
+const Getter = require('../models/Getter');
 
 router.get('/get_own_item/:authorID', async (req, res) => {
   const result = await Advertisement.findOne({ isSuccessDone: false, authorID: req.params.authorID })
@@ -45,6 +46,22 @@ router.post("/create", async (req, res) => {
 router.delete("/done/:advertID", async (req, res) => {
   const result = await Advertisement.deleteOne({ advertID: req.params.advertID })
   res.send(result.deletedCount >= 1)
+})
+
+router.get("/get_active_by_market", async (req, res) => {
+  let users = await Getter.find({ market: req.query.market }).exec()
+  let usersID = users.filter(item => item.X5_id)
+
+  const adverts = []
+  for (let id of usersID) {
+    let result = await Advertisement.find({ authorID: id, isSuccessDone: false }).exec()
+    if (result != null) adverts.push(result)
+  }
+
+  const randomItem = Math.floor(Math.random() * (adverts.length + 1))
+
+  if (adverts[randomItem] != null) res.send(adverts[randomItem]).status(200)
+  else res.sendStatus(404)
 })
 
 module.exports = router;

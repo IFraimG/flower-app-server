@@ -9,11 +9,10 @@ const AdvertisementSchema = new mongoose.Schema({
         type: String,
         required: false
     },
-    listProducts: [{
-        title: {
-            type: String
-        }
-    }],
+    listProducts: {
+        type: Array,
+        required: false
+    },
     authorName: {
         type: String,
         required: true

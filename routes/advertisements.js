@@ -29,7 +29,7 @@ router.get("/get_item_by_id/:advertID", async (req, res) => {
 router.post("/create", async (req, res) => {
   try {
     const info = req.body
-
+    
     await Advertisement.findOneAndUpdate({ authorID: info.authorID, isSuccessDone: false }, { isSuccessDone: true }, { new: true })
 
     const advertID = generateRandomString(10)

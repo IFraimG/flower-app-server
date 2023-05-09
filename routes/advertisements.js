@@ -31,7 +31,7 @@ router.get('/get_active', async (req, res) => {
 // поиск объявления для отдающего
 router.get("/get_item_by_id/:advertID", async (req, res) => {
   try {
-    const result = await Advertisement.findOne({ advertsID: res.params.advertID })
+    const result = await Advertisement.findOne({ advertsID: req.params.advertID })
     if (result == null) res.status(404).send({message: "NotFound"})
     else res.send(result)
   } catch (err) {

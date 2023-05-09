@@ -12,21 +12,32 @@ router.get('/get_own_item/:authorID', async (req, res) => {
     res.status(200).send(result)
   } catch (err) {
     console.log(err.message);
-    return res.status(400).send({ message: "Error" })
+    return res.status(400).send({ message: err.message })
   }
 });
 
 // поиск все возможных активных объявлений
 router.get('/get_active', async (req, res) => {
+  try {
   const result = await Advertisement.find({ isSuccessDone: false })
   if (result == null) return res.status(404).send({ message: "NotFound" })
   res.status(200).send({result: result})
+  } catch (err) {
+    console.log(err.message);
+    return res.status(400).send({ message: err.message })
+  }
 });
 
+// поиск объявления для отдающего
 router.get("/get_item_by_id/:advertID", async (req, res) => {
-  const result = await Advertisement.findOne({ advertsID: res.params.advertID })
-  if (result == null) res.status(404).send({message: "NotFound"})
-  else res.send(result)
+  try {
+    const result = await Advertisement.findOne({ advertsID: res.params.advertID })
+    if (result == null) res.status(404).send({message: "NotFound"})
+    else res.send(result)
+  } catch (err) {
+    console.log(err.message);
+    return res.status(400).send({ message: err.message })
+  }
 })
 
 // успешное создание объявления
@@ -43,8 +54,7 @@ router.post("/create", async (req, res) => {
       authorName: info.authorName,
       advertsID: advertID,
       authorID: info.authorID,
-      listProducts: info.listProducts,
-      dateOfExpires: info.dateOfExpires
+      listProducts: info.listProducts
     })
   
     try {

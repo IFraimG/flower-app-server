@@ -5,10 +5,6 @@ const AdvertisementSchema = new mongoose.Schema({
         type: String,
         required: true
     },
-    fieldDescription: {
-        type: String,
-        required: false
-    },
     listProducts: {
         type: Array,
         required: false
@@ -31,7 +27,6 @@ const AdvertisementSchema = new mongoose.Schema({
         type: Date,
         default: Date.now()
     },
-    dateOfExpires: Date,
     isSuccessDone: {
         type: String,
         default: false

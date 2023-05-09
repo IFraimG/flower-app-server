@@ -19,7 +19,8 @@ router.get('/get_own_item/:authorID', async (req, res) => {
 // поиск все возможных активных объявлений
 router.get('/get_active', async (req, res) => {
   const result = await Advertisement.find({ isSuccessDone: false })
-  res.send(result)
+  if (result == null) return res.status(404).send({ message: "NotFound" })
+  res.status(200).send({result: result})
 });
 
 router.get("/get_item_by_id/:advertID", async (req, res) => {

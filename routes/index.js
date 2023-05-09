@@ -8,6 +8,8 @@ router.get('/', function(req, res, next) {
   res.send("Добро пожаловать!")
 });
 
+
+// поиск магазина, к которому прикреплен любой пользователь
 router.get("/get_pin_market", async (req, res) => {
   if (req.query.typeUser == "setter") {
     try {

@@ -3,6 +3,7 @@ const Advertisement = require('../models/Advertisement');
 const router = express.Router();
 const Setter = require("../models/Setter")
 
+//
 router.put("/done", async (req, res) => {
   try {
     await Advertisement.findOneAndUpdate({ advertsID: req.body.advertID }, { isSuccessDone: true, userDoneID: req.body.userID }, {
@@ -15,6 +16,7 @@ router.put("/done", async (req, res) => {
   }
 })
 
+// отдающий прикрепляется к магазину 
 router.put("/set_market", async (req, res) => {
   try {
     let result = await Setter.findByIdAndUpdate(req.body.userID, { market: req.body.market }).exec()

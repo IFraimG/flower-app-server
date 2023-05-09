@@ -19,9 +19,9 @@ router.get('/get_own_item/:authorID', async (req, res) => {
 // поиск все возможных активных объявлений
 router.get('/get_active', async (req, res) => {
   try {
-  const result = await Advertisement.find({ isSuccessDone: false })
-  if (result == null) return res.status(404).send({ message: "NotFound" })
-  res.status(200).send({result: result})
+    const result = await Advertisement.find({ isSuccessDone: false, userDoneID: null })
+    if (result == null) return res.status(404).send({ message: "NotFound" })
+    res.status(200).send({result: result})
   } catch (err) {
     console.log(err.message);
     return res.status(400).send({ message: err.message })
@@ -138,5 +138,18 @@ router.put("/finish_getting_product", async (req, res) => {
     return res.status(400).send({ message: err.message })
   }
 })
+
+// поиск истории благотворительных покупок отдающего
+router.get("/find_setter_advertisements/:userID", async (req, res) => {
+  try {
+    const result = await Advertisement.find({ userDoneID: req.params.userID, isSuccessDone: true }).exec()
+    if (result == null) return res.status(404).send({ message: "NotFound" })
+    res.status(200).send({advertisements: result})
+  } catch (error) {
+    console.log(err.message);
+    return res.status(400).send({ message: err.message })
+  }
+})
+
 
 module.exports = router;

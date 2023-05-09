@@ -61,8 +61,12 @@ router.post("/create", async (req, res) => {
 
 // нуждающийся просто удаляет свое объявление
 router.delete("/done/:advertID", async (req, res) => {
-  const result = await Advertisement.deleteOne({ advertID: req.params.advertID })
-  res.send({isDelete: result.deletedCount >= 1})
+  try {
+    const result = await Advertisement.deleteOne({ advertsID: req.params.advertID })
+    res.send({isDelete: result.deletedCount >= 1})
+  } catch (err) {
+    return res.status(400).send({message: err.message})
+  }
 })
 
 // поиск активных объявлений определенного магазина

@@ -5,8 +5,14 @@ const Getter = require('../models/Getter');
 const generateRandomString = require('../utils/generateRandomString');
 
 router.get('/get_own_item/:authorID', async (req, res) => {
-  const result = await Advertisement.findOne({ isSuccessDone: false, authorID: req.params.authorID })
-  res.send(result)
+  try {
+    const result = await Advertisement.findOne({ isSuccessDone: false, authorID: req.params.authorID })
+    if (result == null) return res.status(404).send({ message: "NotFound" })
+    res.status(200).send(result)
+  } catch (err) {
+    console.log(err.message);
+    return res.status(400).send({ message: "Error" })
+  }
 });
 
 router.get('/get_active', async (req, res) => {
@@ -24,7 +30,7 @@ router.post("/create", async (req, res) => {
   try {
     const info = req.body
 
-    await Advertisement.findOneAndUpdate({ authorID: info.authorID, isDone: false }, { isDone: true }, { new: true })
+    await Advertisement.findOneAndUpdate({ authorID: info.authorID, isSuccessDone: false }, { isSuccessDone: true }, { new: true })
 
     const advertID = generateRandomString(10)
     const advertisement = new Advertisement({ 

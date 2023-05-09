@@ -9,15 +9,6 @@ let opts = {}
 opts.jwtFromRequest = ExtractJwt.fromAuthHeaderAsBearerToken()
 opts.secretOrKey = jwtsecret
 
-// passport.serializeUser((user, done) => done(null, user))
-// passport.deserializeUser(async (id, done) => {
-//   try {
-//     let user = await User.findOne({authID: id})
-//     done(null, user)
-//   } catch (error) {
-//     done(error)
-//   }
-// })
 
 passport.use(
   new JwtStrategy(opts, async (jwtPayload, done) => {

@@ -18,7 +18,11 @@ const AdvertisementSchema = new mongoose.Schema({
         type: String,
         required: true
     },
-    advertsID: mongoose.Schema.Types.ObjectId,
+    advertsID: {
+        type: String,
+        required: true,
+        unique: true
+    },
     gettingProductID: String,
     authorID: {
         type: String,

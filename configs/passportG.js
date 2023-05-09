@@ -3,7 +3,7 @@ let JwtStrategy = require("passport-jwt").Strategy
 let ExtractJwt = require("passport-jwt").ExtractJwt
 let User = require("../models/Getter.js")
 let { jwtsecret } = require("./jwt")
-
+// NOT USED
 let opts = {}
 opts.jwtFromRequest = ExtractJwt.fromAuthHeaderAsBearerToken()
 opts.secretOrKey = jwtsecret

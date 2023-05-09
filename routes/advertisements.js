@@ -2,6 +2,7 @@ const express = require('express');
 const router = express.Router();
 const Advertisement = require("../models/Advertisement");
 const Getter = require('../models/Getter');
+const generateRandomString = require('../utils/generateRandomString');
 
 router.get('/get_own_item/:authorID', async (req, res) => {
   const result = await Advertisement.findOne({ isSuccessDone: false, authorID: req.params.authorID })
@@ -23,27 +24,26 @@ router.post("/create", async (req, res) => {
   try {
     const info = req.body
 
-    await Advertisement.findOneAndDelete({ authorID: info.authorID, isDone: false })
+    await Advertisement.findOneAndUpdate({ authorID: info.authorID, isDone: false }, { isDone: true }, { new: true })
 
+    const advertID = generateRandomString(10)
     const advertisement = new Advertisement({ 
-      title: info.title, 
-      fieldDescription: info.desc, 
+      title: info.title,
       listProducts: info.products, 
       authorName: info.authorName,
-      advertsID: info.advertsID,
+      advertsID: advertID,
       authorID: info.authorID,
       listProducts: info.listProducts,
       gettingProductID: info.gettingProductID,
       dateOfExpires: info.dateOfExpires
     })
   
-    let err = await advertisement.save()
-    if (err) {
+    try {
+      await advertisement.save()
+      res.status(200).send(advertisement)
+    } catch (err) {
       console.log(err);
       return res.status(400).send({message: "Error"})
-    } else {
-  
-      res.status(200).send(advertisement)
     }
   } catch (err) {
     console.log(err.message);

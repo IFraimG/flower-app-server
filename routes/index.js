@@ -5,7 +5,7 @@ const Setter = require("../models/Setter")
 
 
 router.get('/', function(req, res, next) {
-  res.send("iii")
+  res.send("Добро пожаловать!")
 });
 
 router.get("/get_pin_market", async (req, res) => {

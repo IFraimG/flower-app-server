@@ -15,15 +15,16 @@ router.get('/get_active', async (req, res) => {
 
 router.get("/get_item_by_id/:advertID", async (req, res) => {
   const result = await Advertisement.findOne({ advertsID: res.params.advertID })
-  if (result == null) res.sendStatus(404)
+  if (result == null) res.status(404).send({message: "NotFound"})
   else res.send(result)
 })
 
 router.post("/create", async (req, res) => {
   try {
+    const info = req.body
+
     await Advertisement.findOneAndDelete({ authorID: info.authorID, isDone: false })
 
-    const info = req.body
     const advertisement = new Advertisement({ 
       title: info.title, 
       fieldDescription: info.desc, 
@@ -39,14 +40,14 @@ router.post("/create", async (req, res) => {
     let err = await advertisement.save()
     if (err) {
       console.log(err);
-      return res.sendStatus(400)
+      return res.status(400).send({message: "Error"})
     } else {
   
-      res.send(advertisement).status(200)
+      res.status(200).send(advertisement)
     }
   } catch (err) {
     console.log(err.message);
-    res.sendStatus(400)
+    res.status(400).send({message: "Error"})
   }
 })
 
@@ -67,8 +68,8 @@ router.get("/get_active_by_market", async (req, res) => {
 
   const randomItem = Math.floor(Math.random() * (adverts.length + 1))
 
-  if (adverts[randomItem] != null) res.send(adverts[randomItem]).status(200)
-  else res.sendStatus(404)
+  if (adverts[randomItem] != null) res.status(200).send(adverts[randomItem])
+  else res.status(404).send({message: "NotFound"})
 })
 
 module.exports = router;

@@ -16,6 +16,10 @@ const SetterSchema = new mongoose.Schema({
     market: {
         type: String,
         required: false
+    },
+    authID: {
+        type: String,
+        required: true
     }
 })
 

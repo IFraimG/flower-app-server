@@ -3,7 +3,7 @@ let router = express.Router()
 let User = require("../models/Getter.js")
 let { jwtsecret } = require("../configs/jwt.js")
 let jwt = require("jsonwebtoken")
-let passport = require("../configs/passportG.js")
+let passport = require("../configs/passportS.js")
 const bcrypt = require("bcrypt")
 
 router.post("/login", async (req, res) => {
@@ -16,7 +16,8 @@ router.post("/login", async (req, res) => {
       let token = jwt.sign({
         sub: user._id,
         phone: user.phone,
-        login: user.login
+        login: user.login,
+        type: "getter"
       }, jwtsecret)
       res.send({token: "Bearer " + token, user: user})
     }
@@ -32,7 +33,8 @@ router.post('/signup', async (req, res, next) => {
     let token = jwt.sign({
       sub: user._id,
       phone: user.phone,
-      login: user.login
+      login: user.login,
+      type: "getter"
     }, jwtsecret)
     res.send({token: "Bearer " + token, user: user})
   }

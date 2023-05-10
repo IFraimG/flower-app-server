@@ -44,5 +44,5 @@ morgan.token('authorization', function(req, res) {
     return req.headers.authorization;
 });
 
-app.listen(process.env.PORT || 8000, "192.168.0.101", () => console.log("сервер запущен 8000"))
+app.listen(process.env.PORT || 8000, "192.168.0.100", () => console.log("сервер запущен 8000"))
 // app.listen(process.env.PORT || 3000, () => console.log("сервер запущен 8000"))   

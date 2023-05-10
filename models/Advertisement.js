@@ -24,7 +24,7 @@ const AdvertisementSchema = new mongoose.Schema({
         required: true
     },
     dateOfCreated: {
-        type: Date,
+        type: String,
         default: Date.now().toLocaleString('ru-RU', {day: '2-digit', month: '2-digit', year: '2-digit'})
     },
     isSuccessDone: {

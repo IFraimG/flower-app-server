@@ -36,7 +36,7 @@ const NotificationSchema = new mongoose.Schema({
     },
     createdAt: {
         type: String,
-        default: () => dayjs.format("DD:MM:YY")
+        default: () => dayjs().format("DD:MM:YY")
     }
 })
 

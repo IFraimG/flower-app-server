@@ -3,9 +3,9 @@ const router = express.Router();
 const Notification = require("../models/Notification")
 
 
-router.get("/get_notifications/:userID", async (req, res) => {
+router.get("/get_notifications", async (req, res) => {
   try {
-    const notifications = await Notification.find({ userID: req.params.userID }).exec()
+    const notifications = await Notification.find({ userID: req.query.userID, typeOfUser: req.query.typeOfUser }).exec()
     if (notifications == null) return res.status(404).send({ message: "NotFound" })
     res.status(200).send({result: notifications})
   } catch (error) {

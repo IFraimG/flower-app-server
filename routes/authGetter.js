@@ -29,12 +29,12 @@ router.post('/signup', async (req, res, next) => {
   const password = await bcrypt.hash(req.body.password, salt);
   let isUserPhone = await User.findOne({ phone: req.body.phone, login: req.body.login }).exec()
   if (!isUserPhone) {
-    let user = await User.create({ password, login: req.body.login, phone: req.body.phone })
+    let user = await User.create({ password, login: req.body.login, phone: req.body.phone, fcmToken: req.body.tokenFCM })
     let token = jwt.sign({
       sub: user._id,
       phone: user.phone,
       login: user.login,
-      type: "getter"
+      type: "getter",
     }, jwtsecret)
     res.send({token: "Bearer " + token, user: user})
   }

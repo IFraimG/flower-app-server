@@ -16,6 +16,10 @@ const GetterSchema = new mongoose.Schema({
     market: {
         type: String,
         required: false
+    },
+    fcmToken: {
+        type: String,
+        required: false
     }
 })
 

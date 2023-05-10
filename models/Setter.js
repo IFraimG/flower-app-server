@@ -20,6 +20,10 @@ const SetterSchema = new mongoose.Schema({
     authID: {
         type: String,
         required: true
+    },
+    fcmToken: {
+        type: String,
+        required: false
     }
 })
 

@@ -17,8 +17,8 @@ router.put("/set_market", async (req, res) => {
 router.put("/edit_profile", async (req, res) => {
   try {
     let getter = await Getter.findById(req.body.userID).exec()
-    
-    const match = await bcrypt.compare(req.body.oldPassword, getter.password);
+
+    const match = await bcrypt.compare(req.body.old_password, getter.password);
     if (!match) return res.status(400).send({ message: "Incorrect Password" })
 
     if (req.body?.login.length > 0) getter.login = req.body.login
@@ -28,11 +28,24 @@ router.put("/edit_profile", async (req, res) => {
       const password = await bcrypt.hash(req.body.password, salt);
       getter.password = password
     }
-    const result = await result.save()
-    res.status(201).send({ result: result })
+    const result = await getter.save()
+    res.status(201).send(result)
   } catch (error) {
+    console.log(error.message);
     return res.status(400).send({message: error.message})
   
+  }
+})
+
+router.get("/get_token/:authorID", async (req, res) => {
+  try {
+    let getter = await Getter.findById(req.params.authorID).exec()
+    if (getter == null) return res.status(404).send({ message: "NotFound" })
+    
+    res.status(200).send({ fcmToken: getter.fcmToken })
+  } catch (error) {
+    console.log(error.message);
+    return res.status(400).send({message: error.message})
   }
 })
 

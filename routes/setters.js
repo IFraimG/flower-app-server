@@ -25,5 +25,16 @@ router.put("/set_market", async (req, res) => {
   }
 })
 
+router.get("/get_token/:authorID", async (req, res) => {
+  try {
+    let setter = await Setter.findById(req.params.authorID).exec()
+    if (setter == null) return res.status(404).send({ message: "NotFound" })
+    
+    res.status(200).send({ fcmToken: setter.fcmToken })
+  } catch (error) {
+    console.log(error.message);
+    return res.status(400).send({message: error.message})
+  }
+})
 
 module.exports = router;

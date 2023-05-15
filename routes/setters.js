@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const Setter = require("../models/Setter")
-
+const bcrypt = require("bcrypt")
 
 // router.put("/done", async (req, res) => {
 //   try {

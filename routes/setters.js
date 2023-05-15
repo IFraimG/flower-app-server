@@ -37,4 +37,27 @@ router.get("/get_token/:authorID", async (req, res) => {
   }
 })
 
+router.put("/edit_profile", async (req, res) => {
+  try {
+    let setter = await Setter.findById(req.body.userID).exec()
+
+    const match = await bcrypt.compare(req.body.old_password, setter.password);
+    if (!match) return res.status(400).send({ message: "Incorrect Password" })
+
+    if (req.body?.login.length > 0) setter.login = req.body.login
+    if (req.body?.phone.length > 0) setter.phone = req.body.phone
+    if (req.body?.password.length > 0) {
+      const salt = await bcrypt.genSalt(10)
+      const password = await bcrypt.hash(req.body.password, salt);
+      setter.password = password
+    }
+    const result = await setter.save()
+    res.status(201).send(result)
+  } catch (error) {
+    console.log(error.message);
+    return res.status(400).send({message: error.message})
+  
+  }
+})
+
 module.exports = router;

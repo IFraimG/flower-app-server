@@ -1,4 +1,10 @@
 const mongoose = require("mongoose")
+const dayjs = require("dayjs")
+const utc = require('dayjs/plugin/utc');
+const timezone = require('dayjs/plugin/timezone');
+
+dayjs.extend(utc);
+dayjs.extend(timezone);
 
 const AdvertisementSchema = new mongoose.Schema({
     title: {
@@ -25,7 +31,7 @@ const AdvertisementSchema = new mongoose.Schema({
     },
     dateOfCreated: {
         type: String,
-        default: Date.now().toLocaleString('ru-RU', {day: '2-digit', month: '2-digit', year: '2-digit'})
+        default: dayjs().tz("Europe/Moscow").format('YYYY-MM-DD HH:mm:ss')
     },
     isSuccessDone: {
         type: String,

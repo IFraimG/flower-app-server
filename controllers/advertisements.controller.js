@@ -36,8 +36,7 @@ module.exports.findOldAdverts = async (req, res, next) => {
     }
 
     const advertDate = dayjs(advert.dateOfCreated) 
-
-    const diffInHours = currentDate.diff(advertDate, 'hour');    
+    const diffInHours = dayjs(currentDate).diff(advertDate, 'hour');    
     if (diffInHours > 2) await Advertisement.deleteOne({ authorID: item._id, isSuccessDone: false })
   }
 

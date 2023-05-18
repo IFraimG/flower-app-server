@@ -112,12 +112,11 @@ module.exports.done = async (req, res) => {
 }
 
 module.exports.getActiveByMarket = async (req, res) => {
-  let users = await Getter.find({ market: req.query.market }).limit(5).exec()
-  let usersID = users.filter(item => item._id)
+  let users = await Getter.find({ market: req.query.market }).exec()
 
   const adverts = []
-  for (let id of usersID) {
-    let result = await Advertisement.find({ authorID: id, isSuccessDone: false }).exec()
+  for (let item of users) {
+    let result = await Advertisement.find({ authorID: item._id, isSuccessDone: false, userDoneID: null }).exec()
     if (result != null) adverts.push(result)
   }
 

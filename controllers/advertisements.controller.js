@@ -111,9 +111,8 @@ module.exports.done = async (req, res) => {
   }
 }
 
-module.exports.getActiveByMarket =
- async (req, res) => {
-  let users = await Getter.find({ market: req.query.market }).exec()
+module.exports.getActiveByMarket = async (req, res) => {
+  let users = await Getter.find({ market: req.query.market }).limit(5).exec()
   let usersID = users.filter(item => item._id)
 
   const adverts = []
@@ -173,7 +172,6 @@ module.exports.findSetterAdvertisements = async (req, res) => {
     if (result == null) return res.status(404).send({ message: "NotFound" })
     res.status(200).send({advertisements: result})
   } catch (error) {
-    console.log(err.message);
     return res.status(400).send({ message: err.message })
   }
 }

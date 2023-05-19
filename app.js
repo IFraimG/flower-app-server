@@ -99,4 +99,4 @@ io.on("connection", socket => {
 
 
 // server.listen(process.env.PORT || 8080, "192.168.0.100", () => console.log("сервер запущен 8000"))
-app.listen(process.env.PORT || 8080, () => console.log("сервер запущен 8000"))   
+server.listen(process.env.PORT || 8080, () => console.log("сервер запущен 8000"))   

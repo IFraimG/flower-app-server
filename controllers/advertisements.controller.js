@@ -22,7 +22,7 @@ module.exports.getOwnItem = async (req, res) => {
 module.exports.findOldAdverts = async (req, res, next) => {
   const currentDate = dayjs().tz("Europe/Moscow").format('YYYY-MM-DD HH:mm:ss');
 
-  if ((dayjs(currentDate).hour() > 22 || dayjs(currentDate).hour() < 10)) {
+  if ((dayjs(currentDate).hour() >= 23 || dayjs(currentDate).hour() < 10)) {
     await Advertisement.deleteMany({ isSuccessDone: false })
     return next()
   }
@@ -30,13 +30,11 @@ module.exports.findOldAdverts = async (req, res, next) => {
   const result = await Getter.find({ market: req.params.market }).exec()
   for (item of result) {
     const advert = await Advertisement.findOne({ authorID: item._id, isSuccessDone: false }).exec()
-    if (advert?.dateOfCreated == null) {
-      await Advertisement.deleteOne({ authorID: item._id, isSuccessDone: false })
-      continue
-    }
+    if (advert == null) continue
 
     const advertDate = dayjs(advert.dateOfCreated) 
     const diffInHours = dayjs(currentDate).diff(advertDate, 'hour');    
+
     if (diffInHours > 2) await Advertisement.deleteOne({ authorID: item._id, isSuccessDone: false })
   }
 
@@ -82,7 +80,6 @@ module.exports.create = async (req, res) => {
     const advertID = generateRandomString(10)
     const advertisement = new Advertisement({ 
       title: info.title,
-      listProducts: info.products, 
       authorName: info.authorName,
       advertsID: advertID,
       authorID: info.authorID,
@@ -116,13 +113,14 @@ module.exports.getActiveByMarket = async (req, res) => {
 
   const adverts = []
   for (let item of users) {
-    let result = await Advertisement.find({ authorID: item._id, isSuccessDone: false, userDoneID: null }).exec()
+    let result = await Advertisement.findOne({ authorID: item._id, isSuccessDone: false, userDoneID: null }).exec()
     if (result != null) adverts.push(result)
   }
 
   const randomItem = Math.floor(Math.random() * (adverts.length + 1))
 
   if (adverts[randomItem] != null) res.status(200).send(adverts[randomItem])
+  else if (adverts.length > 0) res.status(200).send(adverts[0]) 
   else res.status(404).send({message: "NotFound"})
 }
 

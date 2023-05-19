@@ -35,5 +35,68 @@ app.use('/auth/getter', authGetterRouter);
 app.use('/auth/setter', authSetterRouter);
 app.use("/notifications", notificationsRouter)
 
-// app.listen(process.env.PORT || 8080, "192.168.0.100", () => console.log("сервер запущен 8000"))
-app.listen(process.env.PORT || 8080, () => console.log("сервер запущен 8000"))   
+const http = require("http")
+const server = http.createServer(app)
+
+const { Server } = require("socket.io");
+const Chat = require('./models/Chat');
+const Message = require('./models/Message');
+const Getter = require('./models/Getter');
+const Setter = require('./models/Setter');
+  
+const debug = require('debug')('socket');
+const io = new Server(server)
+io.on("connection", socket => {
+    console.log("connected!");
+    
+    socket.on("create_chat", data => {
+        Chat.findOne({ users: data }).then(chat => {
+            if (chat != null) io.emit("getCreatedChat", chat)
+            else {
+                Getter.findById(data[1]).then(user => {
+                    let title = "Новый чат"
+                    if (user != null) title = user.login
+                    Chat.create({ title: title, users: data }).then(result => io.emit("getCreatedChat", result))
+                })
+            }
+        })
+    })
+    
+    socket.on("send_user_id_to_get_chat", async (data) => {
+        const result = await Chat.find({ users: { $elemMatch: { $regex: data.userID, $options: 'i' } } }).exec()
+        if (result != null) {
+            const chats = [...result]
+            chats.map(async (chat, index) => {
+                if (data.type == "setter") {
+                    const user = await Getter.findById(chat.users[1]).exec()
+                    chats[index].title = user.login
+                } else {
+                    const user = await Setter.findById(chat.users[0]).exec()
+                    chats[index].title = user.login
+                }
+            })
+
+            const res = chats.sort((a, b) => new Date(a.dateCreated) - new Date(b.dateCreated))
+            io.emit("get_chats", {result: res})
+        }
+    })
+
+    socket.on("get_messages", data => {
+        Message.find({ chatID: data }).then(result => {
+            if (result != null) {
+                const res = result.sort((a, b) => new Date(a.dateCreated) - new Date(b.dateCreated))
+                io.emit("set_messages", { result: res })
+            }
+        })
+    })
+
+    socket.on("save_message", data => {
+        Message.create({ body: data.body, chatID: data.chatID, authorID: data.authorID }).then(result => {
+            if (result != null) io.emit("set_messages", { result: [result] })
+        })
+    })
+})
+
+
+server.listen(process.env.PORT || 8080, "192.168.0.100", () => console.log("сервер запущен 8000"))
+// app.listen(process.env.PORT || 8080, () => console.log("сервер запущен 8000"))   

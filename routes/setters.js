@@ -8,4 +8,7 @@ router.get("/get_token/:authorID", settersController.getToken)
 
 router.put("/edit_profile", settersController.editProfile)
 
+router.put("/change_token", settersController.changeToken)
+
+
 module.exports = router;

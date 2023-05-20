@@ -44,3 +44,15 @@ module.exports.getToken = async (req, res) => {
     return res.status(400).send({message: error.message})
   }
 }
+
+module.exports.changeToken = async (req, res) => {
+  try {
+    let getter = await Getter.findByIdAndUpdate(req.body.userID, { fcmToken: req.body.token }, { new: true }).exec()
+    if (getter == null) return res.status(404).send({ message: "NotFound" })
+    
+    res.status(200).send(getter)
+  } catch (error) {
+    console.log(error.message);
+    return res.status(400).send({message: error.message})
+  }
+}

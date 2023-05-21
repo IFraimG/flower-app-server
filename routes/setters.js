@@ -1,14 +1,15 @@
 const express = require('express');
 const router = express.Router();
 const settersController = require("../controllers/setters.controller")
+let passport = require("../configs/passportS.js")
 
-router.put("/set_market", settersController.setMarket)
+router.put("/set_market", passport.authenticate('jwt', { session: false }), settersController.setMarket)
 
-router.get("/get_token/:authorID", settersController.getToken)
+router.get("/get_token/:authorID", passport.authenticate('jwt', { session: false }), settersController.getToken)
 
-router.put("/edit_profile", settersController.editProfile)
+router.put("/edit_profile", passport.authenticate('jwt', { session: false }), settersController.editProfile)
 
-router.put("/change_token", settersController.changeToken)
+router.put("/change_token", passport.authenticate('jwt', { session: false }), settersController.changeToken)
 
 
 module.exports = router;

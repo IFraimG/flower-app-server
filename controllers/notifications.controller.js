@@ -25,12 +25,13 @@ module.exports.createNotification = async (req, res) => {
         const listItems = req.body.listItems == null ? [] : req.body.listItems
         const buttonType = req.body.buttonType == null ? "" : req.body.listItems
         const fromUserID = req.body.fromUserID == null ? "" : req.body.fromUserID
+        const advertID = req.body.advertID == null ? "" : req.body.advertID
         const notification = await Notification.create({
             title: req.body.title,
             description: req.body.description,
             userID: req.body.userID,
             typeOfUser: req.body.typeOfUser,
-            listItems, buttonType, fromUserID
+            listItems, buttonType, fromUserID, advertID
         })
 
         const result = await notification.save()

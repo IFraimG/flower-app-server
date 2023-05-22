@@ -33,12 +33,20 @@ const AdvertisementSchema = new mongoose.Schema({
         type: String,
         default: dayjs().tz("Europe/Moscow").format('YYYY-MM-DD HH:mm:ss')
     },
+    dateDone: {
+        type: String,
+        required: false
+    },
     isSuccessDone: {
         type: String,
         default: false
     },
     userDoneID: {
         type: String, 
+        required: false
+    },
+    advertID: {
+        type: String,
         required: false
     }
 })

@@ -43,8 +43,7 @@ const Chat = require('./models/Chat');
 const Message = require('./models/Message');
 const Getter = require('./models/Getter');
 const Setter = require('./models/Setter');
-  
-const debug = require('debug')('socket');
+
 const io = new Server(server)
 io.on("connection", socket => {
     console.log("connected!");
@@ -65,19 +64,18 @@ io.on("connection", socket => {
     socket.on("send_user_id_to_get_chat", async (data) => {
         const result = await Chat.find({ users: { $elemMatch: { $regex: data.userID, $options: 'i' } } }).exec()
         if (result != null) {
-            const chats = [...result]
-            chats.map(async (chat, index) => {
+            let chats = [...result]
+            for (let index = 0; index < chats.length; index++) {
                 if (data.type == "setter") {
-                    const user = await Getter.findById(chat.users[1]).exec()
+                    const user = await Getter.findById(chats[index].users[1]).exec()
                     chats[index].title = user.login
-                } else {
-                    const user = await Setter.findById(chat.users[0]).exec()
+                } else if (data.type == "getter") {
+                    const user = await Setter.findById(chats[index].users[0]).exec()
                     chats[index].title = user.login
                 }
-            })
-
-            const res = chats.sort((a, b) => new Date(a.dateCreated) - new Date(b.dateCreated))
-            io.emit("get_chats", {result: res})
+            }
+            chats = chats.sort((a, b) => new Date(a.dateCreated) - new Date(b.dateCreated))
+            io.emit("get_chats", {result: chats})
         }
     })
 
@@ -98,5 +96,5 @@ io.on("connection", socket => {
 })
 
 
-// server.listen(process.env.PORT || 8080, "192.168.0.100", () => console.log("сервер запущен 8000"))
-server.listen(process.env.PORT || 8080, () => console.log("сервер запущен 8000"))   
+server.listen(process.env.PORT || 8080, "192.168.0.100", () => console.log("сервер запущен 8000"))
+// server.listen(process.env.PORT || 8080, () => console.log("сервер запущен 8000"))   

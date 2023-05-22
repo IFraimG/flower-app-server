@@ -21,7 +21,6 @@ module.exports.getOwnItem = async (req, res) => {
 
 module.exports.findOldAdverts = async (req, res, next) => {
   const currentDate = dayjs().tz("Europe/Moscow").format('YYYY-MM-DD HH:mm:ss');
-
   if ((dayjs(currentDate).hour() >= 23 || dayjs(currentDate).hour() < 10)) {
     await Advertisement.deleteMany({ isSuccessDone: false })
     return next()
@@ -32,9 +31,8 @@ module.exports.findOldAdverts = async (req, res, next) => {
     const advert = await Advertisement.findOne({ authorID: item._id, isSuccessDone: false }).exec()
     if (advert == null) continue
 
-    const advertDate = dayjs(advert.dateOfCreated) 
+    const advertDate = dayjs(advert.dateDone) 
     const diffInHours = dayjs(currentDate).diff(advertDate, 'hour');    
-
     if (diffInHours > 2) await Advertisement.deleteOne({ authorID: item._id, isSuccessDone: false })
   }
 
@@ -127,7 +125,7 @@ module.exports.getActiveByMarket = async (req, res) => {
 module.exports.gettingProduct = async (req, res) => {
   try {
     const result = await Advertisement.findOneAndUpdate({ isSuccessDone: false, authorID: req.body.authorID }, 
-      { userDoneID: req.body.userDoneID, gettingProductID: req.body.gettingProductID }, { new: true })
+      { userDoneID: req.body.userDoneID, gettingProductID: req.body.gettingProductID, dateDone: dayjs().tz("Europe/Moscow").format('YYYY-MM-DD HH:mm:ss') }, { new: true })
     
     if (result == null) return res.status(404).send({ message: "NotFound" })
     res.status(200).send(result)

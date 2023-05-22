@@ -10,8 +10,17 @@ dayjs.extend(timezone);
 
 module.exports.getOwnItem = async (req, res) => {
   try {
-    const result = await Advertisement.findOne({ isSuccessDone: false, authorID: req.params.authorID })
+    const result = await Advertisement.findOne({ isSuccessDone: false, authorID: req.params.authorID }).exec()
     if (result == null) return res.status(404).send({ message: "NotFound" })
+    
+    const currentDate = dayjs().tz("Europe/Moscow").format('YYYY-MM-DD HH:mm:ss');
+    const advertDate = dayjs(result.dateDone) 
+    const diffInHours = dayjs(currentDate).diff(advertDate, 'hour');    
+    if (diffInHours >= 2) {
+      await Advertisement.deleteOne({ isSuccessDone: false, authorID: req.params.authorID })
+      return res.status(404).send({ message: "NotFound" })
+    }
+    
     res.status(200).send(result)
   } catch (err) {
     console.log(err.message);

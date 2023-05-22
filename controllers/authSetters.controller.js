@@ -26,8 +26,9 @@ module.exports.login = async (req, res) => {
 module.exports.signup = async (req, res, next) => {
   const salt = await bcrypt.genSalt(10)
   const password = await bcrypt.hash(req.body.password, salt);
-  let isUserPhone = await User.findOne({ phone: req.body.phone, login: req.body.login }).exec()
-  if (!isUserPhone) {
+  let isUserLogin = await User.findOne({ login: req.body.login }).exec()
+  let isUserPhone = await User.findOne({ login: req.body.phone }).exec()
+  if (!isUserPhone && !isUserLogin) {
     let user = await User.create({ password, login: req.body.login, phone: req.body.phone, fcmToken: req.body.tokenFCM, authID: generateRandomString(10) })
     let token = jwt.sign({
       sub: user.authID,

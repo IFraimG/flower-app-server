@@ -16,7 +16,7 @@ module.exports.getOwnItem = async (req, res) => {
     const currentDate = dayjs().tz("Europe/Moscow").format('YYYY-MM-DD HH:mm:ss');
     const advertDate = dayjs(result.dateDone) 
     const diffInHours = dayjs(currentDate).diff(advertDate, 'hour');    
-    if (diffInHours >= 2) {
+    if (diffInHours > 2) {
       await Advertisement.deleteOne({ isSuccessDone: false, authorID: req.params.authorID })
       return res.status(404).send({ message: "NotFound" })
     }

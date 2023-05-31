@@ -41,6 +41,13 @@ module.exports.editProfile = async (req, res) => {
     const match = await bcrypt.compare(req.body.old_password, setter.password);
     if (!match) return res.status(400).send({ message: "Incorrect Password" })
 
+    const isSetterWithLogin = await Setter.findOne({ login: req.body.login }).exec()
+    const isSetterWithPhone = await Setter.findOne({ phone: req.body.phone }).exec()
+    
+    if (isSetterWithLogin != null) return res.status(403).send({ message: "Пользователь с таким логином уже существует" })
+    if (isSetterWithPhone != null) return res.status(403).send({ message: "Пользователь с таким телефоном уже существует" })
+
+
     if (req.body?.login.length > 0) setter.login = req.body.login
     if (req.body?.phone.length > 0) setter.phone = req.body.phone
     if (req.body?.password.length > 0) {

@@ -17,8 +17,8 @@ module.exports.editProfile = async (req, res) => {
     const match = await bcrypt.compare(req.body.old_password, getter.password);
     if (!match) return res.status(400).send({ message: "Incorrect Password" })
 
-    const isGetterWithLogin = await Getter.findOne({ login: req.body.login }).exec()
-    const isGetterWithPhone = await Getter.findOne({ phone: req.body.phone }).exec()
+    const isGetterWithLogin = await Getter.findOne({ login: req.body.login, _id: { $ne: req.body.userID } }).exec()
+    const isGetterWithPhone = await Getter.findOne({ phone: req.body.phone, _id: { $ne: req.body.userID } }).exec()
     
     if (isGetterWithLogin != null) return res.status(403).send({ message: "Пользователь с таким логином уже существует" })
     if (isGetterWithPhone != null) return res.status(403).send({ message: "Пользователь с таким телефоном уже существует" })

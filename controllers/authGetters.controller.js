@@ -5,8 +5,15 @@ const bcrypt = require("bcrypt")
 
 module.exports.login = async (req, res) => {
   let user = await User.findOne({login: req.body.login, phone: req.body.phone}).exec()
-  if (!user) return res.status(404).send({ token: "" })
-  else {
+  if (!user) {
+    const isGetterWithLogin = await User.findOne({ login: req.body.login }).exec()
+    const isGetterWithPhone = await User.findOne({ phone: req.body.phone }).exec()
+  
+    if (isGetterWithLogin != null) return res.status(403).send({ message: "Пользователь с таким логином уже существует" })
+    if (isGetterWithPhone != null) return res.status(403).send({ message: "Пользователь с таким телефоном уже существует" })  
+
+    return res.status(404).send({ token: "" })
+  } else {
     const match = await bcrypt.compare(req.body.password, user.password);
     if (!match) return res.status(400).send({ token: "" })
     else {
@@ -22,6 +29,12 @@ module.exports.login = async (req, res) => {
 }
 
 module.exports.signup = async (req, res, next) => {
+  const isGetterWithLogin = await User.findOne({ login: req.body.login }).exec()
+  const isGetterWithPhone = await User.findOne({ phone: req.body.phone }).exec()
+
+  if (isGetterWithLogin != null) return res.status(403).send({ message: "Пользователь с таким логином уже существует" })
+  if (isGetterWithPhone != null) return res.status(403).send({ message: "Пользователь с таким телефоном уже существует" })
+
   const salt = await bcrypt.genSalt(10)
   const password = await bcrypt.hash(req.body.password, salt);
   let isUserPhone = await User.findOne({ phone: req.body.phone, login: req.body.login }).exec()

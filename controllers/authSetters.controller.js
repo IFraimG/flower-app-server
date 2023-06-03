@@ -25,11 +25,11 @@ module.exports.login = async (req, res) => {
 }
 
 module.exports.signup = async (req, res, next) => {
-  const isSetterWithLogin = await User.findOne({ login: req.body.login }).exec()
-  const isSetterWithPhone = await User.findOne({ phone: req.body.phone }).exec()
+  // const isSetterWithLogin = await User.findOne({ login: req.body.login }).exec()
+  // const isSetterWithPhone = await User.findOne({ phone: req.body.phone }).exec()
   
-  if (isSetterWithLogin != null) return res.status(403).send({ message: "Пользователь с таким логином уже существует" })
-  if (isSetterWithPhone != null) return res.status(403).send({ message: "Пользователь с таким телефоном уже существует" })
+  // if (isSetterWithLogin != null) return res.status(403).send({ message: "Пользователь с таким логином уже существует" })
+  // if (isSetterWithPhone != null) return res.status(403).send({ message: "Пользователь с таким телефоном уже существует" })
 
   const salt = await bcrypt.genSalt(10)
   const password = await bcrypt.hash(req.body.password, salt);

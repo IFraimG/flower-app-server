@@ -1,6 +1,6 @@
 const mongoose = require("mongoose")
 
-const GetterSchema = new mongoose.Schema({
+const GiverSchema = new mongoose.Schema({
     login: {
         type: String,
         required: true
@@ -17,11 +17,14 @@ const GetterSchema = new mongoose.Schema({
         type: String,
         required: false
     },
+    authID: {
+        type: String,
+        required: true
+    },
     fcmToken: {
         type: String,
         required: false
     }
 })
 
-
-module.exports = mongoose.model("Getter", GetterSchema)
+module.exports = mongoose.model("Giver", GiverSchema)

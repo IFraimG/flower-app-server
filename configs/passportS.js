@@ -1,8 +1,8 @@
 let passport = require("passport")
 let JwtStrategy = require("passport-jwt").Strategy
 let ExtractJwt = require("passport-jwt").ExtractJwt
-let Setter = require("../models/Setter.js")
-let Getter = require("../models/Getter.js")
+let Giver = require("../models/Giver.js")
+let Needy = require("../models/Needy.js")
 let { jwtsecret } = require("./jwt")
 
 let opts = {}
@@ -14,9 +14,9 @@ passport.use(
   new JwtStrategy(opts, async (jwtPayload, done) => {
     try {
       let user = null
-      if (jwtPayload.type == "getter") {
-        user = await Getter.findOne({_id: jwtPayload.sub})
-      } else user = await Setter.findOne({authID: jwtPayload.sub})
+      if (jwtPayload.type == "needy") {
+        user = await Needy.findOne({_id: jwtPayload.sub})
+      } else user = await Giver.findOne({authID: jwtPayload.sub})
 
       if (user) done(null, user)
       else done(null, false)

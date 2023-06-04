@@ -1,5 +1,5 @@
 const Advertisement = require("../models/Advertisement");
-const Getter = require('../models/Getter');
+const Getter = require('../models/Needy');
 const generateRandomString = require('../utils/generateRandomString');
 const dayjs = require('dayjs');
 const utc = require('dayjs/plugin/utc');

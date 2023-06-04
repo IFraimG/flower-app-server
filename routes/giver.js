@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const settersController = require("../controllers/setters.controller")
+const settersController = require("../controllers/giver.controller")
 let passport = require("../configs/passportS.js")
 
 router.put("/set_market", passport.authenticate('jwt', { session: false }), settersController.setMarket)

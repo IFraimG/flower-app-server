@@ -9,11 +9,11 @@ require("./configs/db")
 require("dotenv").config()
 
 const indexRouter = require('./routes/index');
-const gettersRouter = require('./routes/getters');
-const settersRouter = require('./routes/setters');
+const needyRouter = require('./routes/needy');
+const giverRouter = require('./routes/giver');
 const advertisementsRouter = require('./routes/advertisements');
-const authSetterRouter = require('./routes/authSetter');
-const authGetterRouter = require('./routes/authGetter');
+const authGiverRouter = require('./routes/authGiver');
+const authNeedyRouter = require('./routes/authNeedy');
 const notificationsRouter = require('./routes/notifications');
 
 const app = express();
@@ -28,11 +28,11 @@ app.use(bodyParser.urlencoded({ extended: false }))
 app.use(bodyParser.json())
 
 app.use('/', indexRouter);
-app.use('/getters', gettersRouter);
-app.use('/setters', settersRouter);
+app.use('/needy', needyRouter);
+app.use('/giver', giverRouter);
 app.use('/advertisements', advertisementsRouter);
-app.use('/auth/getter', authGetterRouter);
-app.use('/auth/setter', authSetterRouter);
+app.use('/auth/needy', authNeedyRouter);
+app.use('/auth/giver', authGiverRouter);
 app.use("/notifications", notificationsRouter)
 
 const http = require("http")
@@ -41,8 +41,8 @@ const server = http.createServer(app)
 const { Server } = require("socket.io");
 const Chat = require('./models/Chat');
 const Message = require('./models/Message');
-const Getter = require('./models/Getter');
-const Setter = require('./models/Setter');
+const Needy = require('./models/Needy');
+const Giver = require('./models/Giver');
 
 const io = new Server(server)
 io.on("connection", socket => {
@@ -52,7 +52,7 @@ io.on("connection", socket => {
         Chat.findOne({ users: data }).then(chat => {
             if (chat != null) io.emit("getCreatedChat", chat)
             else {
-                Getter.findById(data[1]).then(user => {
+                Needy.findById(data[1]).then(user => {
                     let title = "Новый чат"
                     if (user != null) title = user.login
                     Chat.create({ title: title, users: data }).then(result => io.emit("getCreatedChat", result))
@@ -66,11 +66,11 @@ io.on("connection", socket => {
         if (result != null) {
             let chats = [...result]
             for (let index = 0; index < chats.length; index++) {
-                if (data.type == "setter") {
-                    const user = await Getter.findById(chats[index].users[1]).exec()
+                if (data.type == "giver") {
+                    const user = await Needy.findById(chats[index].users[1]).exec()
                     chats[index].title = user.login
-                } else if (data.type == "getter") {
-                    const user = await Setter.findById(chats[index].users[0]).exec()
+                } else if (data.type == "needy") {
+                    const user = await Giver.findById(chats[index].users[0]).exec()
                     chats[index].title = user.login
                 }
             }
@@ -96,5 +96,5 @@ io.on("connection", socket => {
 })
 
 
-// server.listen(process.env.PORT || 8080, "192.168.0.100", () => console.log("сервер запущен 8000"))
-server.listen(process.env.PORT || 8080, () => console.log("сервер запущен 8000"))   
+server.listen(process.env.PORT || 8080, "192.168.0.100", () => console.log("сервер запущен 8000"))
+// server.listen(process.env.PORT || 8080, () => console.log("сервер запущен 8000"))   

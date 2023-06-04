@@ -1,4 +1,4 @@
-let User = require("../models/Setter.js")
+let User = require("../models/Giver.js")
 let { jwtsecret } = require("../configs/jwt.js")
 let jwt = require("jsonwebtoken")
 const bcrypt = require("bcrypt")
@@ -17,7 +17,7 @@ module.exports.login = async (req, res) => {
         phone: user.phone,
         login: user.login,
         id: user._id,
-        type: "setter",
+        type: "giver",
       }, jwtsecret)
       res.send({token: "Bearer " + token, user: { login: user.login, phone: user.phone, id: user._id }})
     }
@@ -25,11 +25,11 @@ module.exports.login = async (req, res) => {
 }
 
 module.exports.signup = async (req, res, next) => {
-  // const isSetterWithLogin = await User.findOne({ login: req.body.login }).exec()
-  // const isSetterWithPhone = await User.findOne({ phone: req.body.phone }).exec()
+  // const isGiverWithLogin = await User.findOne({ login: req.body.login }).exec()
+  // const isGiverWithPhone = await User.findOne({ phone: req.body.phone }).exec()
   
-  // if (isSetterWithLogin != null) return res.status(403).send({ message: "Пользователь с таким логином уже существует" })
-  // if (isSetterWithPhone != null) return res.status(403).send({ message: "Пользователь с таким телефоном уже существует" })
+  // if (isGiverWithLogin != null) return res.status(403).send({ message: "Пользователь с таким логином уже существует" })
+  // if (isGiverWithPhone != null) return res.status(403).send({ message: "Пользователь с таким телефоном уже существует" })
 
   const salt = await bcrypt.genSalt(10)
   const password = await bcrypt.hash(req.body.password, salt);
@@ -41,7 +41,7 @@ module.exports.signup = async (req, res, next) => {
       phone: user.phone,
       login: user.login,
       id: user._id,
-      type: "setter"
+      type: "giver"
     }, jwtsecret)
     res.send({token: "Bearer " + token, user: { login: user.login, phone: user.phone, id: user._id }})
   }

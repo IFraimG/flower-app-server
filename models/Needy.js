@@ -1,6 +1,6 @@
 const mongoose = require("mongoose")
 
-const SetterSchema = new mongoose.Schema({
+const NeedySchema = new mongoose.Schema({
     login: {
         type: String,
         required: true
@@ -17,14 +17,11 @@ const SetterSchema = new mongoose.Schema({
         type: String,
         required: false
     },
-    authID: {
-        type: String,
-        required: true
-    },
     fcmToken: {
         type: String,
         required: false
     }
 })
 
-module.exports = mongoose.model("Setter", SetterSchema)
+
+module.exports = mongoose.model("Needy", NeedySchema)

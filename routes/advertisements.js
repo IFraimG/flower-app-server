@@ -31,7 +31,7 @@ router.put("/cancel_getting_product", passport.authenticate('jwt', { session: fa
 router.put("/finish_getting_product", passport.authenticate('jwt', { session: false }), advertisementController.finishGettingProduct)
 
 // поиск истории благотворительных покупок отдающего
-router.get("/find_setter_advertisements/:userID", passport.authenticate('jwt', { session: false }), advertisementController.findSetterAdvertisements)
+router.get("/find_giver_advertisements/:userID", passport.authenticate('jwt', { session: false }), advertisementController.findSetterAdvertisements)
 
 
 module.exports = router;

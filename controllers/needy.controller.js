@@ -18,9 +18,9 @@ module.exports.editProfile = async (req, res) => {
     if (!match) return res.status(400).send({ message: "Incorrect Password" })
 
     const isNeedyWithLogin = await Needy.findOne({ login: req.body.login, _id: { $ne: req.body.userID } }).exec()
-    const isNeedyWithPhone = await Needy.findOne({ phone: req.body.phone, _id: { $ne: req.body.userID } }).exec()
-    
     if (isNeedyWithLogin != null) return res.status(403).send({ message: "Пользователь с таким логином уже существует" })
+
+    const isNeedyWithPhone = await Needy.findOne({ phone: req.body.phone, _id: { $ne: req.body.userID } }).exec()
     if (isNeedyWithPhone != null) return res.status(403).send({ message: "Пользователь с таким телефоном уже существует" })
 
     if (req.body?.login.length > 0) Needy.login = req.body.login

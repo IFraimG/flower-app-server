@@ -1,18 +1,6 @@
 const Giver = require("../models/Giver")
 const bcrypt = require("bcrypt")
 
-// router.put("/done", async (req, res) => {
-//   try {
-//     await Advertisement.findOneAndUpdate({ advertsID: req.body.advertID }, { isSuccessDone: true, userDoneID: req.body.userID }, {
-//       new: true
-//     })
-//     res.status(200).send({message: "Update"})
-//   } catch (err) {
-//     console.log(err.message);
-//     return res.status(400).send({ message: "Error" })
-//   }
-// })
-
 module.exports.setMarket = async (req, res) => {
   try {
     let result = await Giver.findByIdAndUpdate(req.body.userID, { market: req.body.market }).exec()
@@ -41,11 +29,11 @@ module.exports.editProfile = async (req, res) => {
     const match = await bcrypt.compare(req.body.old_password, giver.password);
     if (!match) return res.status(400).send({ message: "Incorrect Password" })
 
-    // const isGiverWithLogin = await Giver.findOne({ login: req.body.login, _id: { $ne: req.body.userID } }).maxTimeMS(5000).exec()
-    // if (isGiverWithLogin != null) return res.status(403).send({ message: "Пользователь с таким логином уже существует" })
+    const isGiverWithLogin = await Giver.findOne({ login: req.body.login, _id: { $ne: req.body.userID } }).exec()
+    if (isGiverWithLogin != null) return res.status(403).send({ message: "Пользователь с таким логином уже существует" })
 
-    // const isGiverWithPhone = await Giver.findOne({ phone: req.body.phone, _id: { $ne: req.body.userID } }).maxTimeMS(5000).exec()
-    // if (isGiverWithPhone != null) return res.status(403).send({ message: "Пользователь с таким телефоном уже существует" })
+    const isGiverWithPhone = await Giver.findOne({ phone: req.body.phone, _id: { $ne: req.body.userID } }).exec()
+    if (isGiverWithPhone != null) return res.status(403).send({ message: "Пользователь с таким телефоном уже существует" })
 
     if (req.body?.login.length > 0) giver.login = req.body.login
     if (req.body?.phone.length > 0) giver.phone = req.body.phone
@@ -55,7 +43,7 @@ module.exports.editProfile = async (req, res) => {
       giver.password = password
     }
     const result = await giver.save()
-    res.status(201).send(result)
+    return res.status(201).send(result)
   } catch (error) {
     console.log(error.message);
     return res.status(400).send({message: error.message})
@@ -68,7 +56,7 @@ module.exports.changeToken = async (req, res) => {
     let giver = await Giver.findByIdAndUpdate(req.body.userID, { fcmToken: req.body.token }, { new: true }).exec()
     if (giver == null) return res.status(404).send({ message: "NotFound" })
     
-    res.status(200).send(giver)
+    return res.status(200).send(giver)
   } catch (error) {
     console.log(error.message);
     return res.status(400).send({message: error.message})

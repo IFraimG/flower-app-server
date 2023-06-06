@@ -19,17 +19,17 @@ module.exports.login = async (req, res) => {
         id: user._id,
         type: "giver",
       }, jwtsecret)
-      res.send({token: "Bearer " + token, user: { login: user.login, phone: user.phone, id: user._id }})
+      return res.send({token: "Bearer " + token, user: { login: user.login, phone: user.phone, id: user._id }})
     }
   }
 }
 
 module.exports.signup = async (req, res, next) => {
-  // const isGiverWithLogin = await User.findOne({ login: req.body.login }).exec()
-  // const isGiverWithPhone = await User.findOne({ phone: req.body.phone }).exec()
+  const isGiverWithLogin = await User.findOne({ login: req.body.login }).exec()
+  const isGiverWithPhone = await User.findOne({ phone: req.body.phone }).exec()
   
-  // if (isGiverWithLogin != null) return res.status(403).send({ message: "Пользователь с таким логином уже существует" })
-  // if (isGiverWithPhone != null) return res.status(403).send({ message: "Пользователь с таким телефоном уже существует" })
+  if (isGiverWithLogin != null) return res.status(403).send({ message: "Пользователь с таким логином уже существует" })
+  if (isGiverWithPhone != null) return res.status(403).send({ message: "Пользователь с таким телефоном уже существует" })
 
   const salt = await bcrypt.genSalt(10)
   const password = await bcrypt.hash(req.body.password, salt);
@@ -43,11 +43,11 @@ module.exports.signup = async (req, res, next) => {
       id: user._id,
       type: "giver"
     }, jwtsecret)
-    res.send({token: "Bearer " + token, user: { login: user.login, phone: user.phone, id: user._id }})
+    return res.send({token: "Bearer " + token, user: { login: user.login, phone: user.phone, id: user._id }})
   }
   else return res.status(400).send({token: ""})
 }
 
 module.exports.test = async (req, res) => {
-  res.status(200).send({isAuth: true})
+  return res.status(200).send({isAuth: true})
 }

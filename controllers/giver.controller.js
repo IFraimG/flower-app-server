@@ -29,11 +29,11 @@ module.exports.editProfile = async (req, res) => {
     const match = await bcrypt.compare(req.body.old_password, giver.password);
     if (!match) return res.status(400).send({ message: "Incorrect Password" })
 
-    const isGiverWithLogin = await Giver.findOne({ login: req.body.login, _id: { $ne: req.body.userID } }).exec()
-    if (isGiverWithLogin != null) return res.status(403).send({ message: "Пользователь с таким логином уже существует" })
+    // const isGiverWithLogin = await Giver.findOne({ login: req.body.login, _id: { $ne: req.body.userID } }).exec()
+    // if (isGiverWithLogin != null) return res.status(403).send({ message: "Пользователь с таким логином уже существует" })
 
-    const isGiverWithPhone = await Giver.findOne({ phone: req.body.phone, _id: { $ne: req.body.userID } }).exec()
-    if (isGiverWithPhone != null) return res.status(403).send({ message: "Пользователь с таким телефоном уже существует" })
+    // const isGiverWithPhone = await Giver.findOne({ phone: req.body.phone, _id: { $ne: req.body.userID } }).exec()
+    // if (isGiverWithPhone != null) return res.status(403).send({ message: "Пользователь с таким телефоном уже существует" })
 
     if (req.body?.login.length > 0) giver.login = req.body.login
     if (req.body?.phone.length > 0) giver.phone = req.body.phone

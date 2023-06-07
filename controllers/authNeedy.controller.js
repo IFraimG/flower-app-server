@@ -25,8 +25,8 @@ module.exports.signup = async (req, res, next) => {
   const isNeedyWithLogin = await User.findOne({ login: req.body.login }).exec()
   const isNeedyWithPhone = await User.findOne({ phone: req.body.phone }).exec()
 
-  if (isNeedyWithLogin != null) return res.status(403).send({ message: "Пользователь с таким логином уже существует" })
-  if (isNeedyWithPhone != null) return res.status(403).send({ message: "Пользователь с таким телефоном уже существует" })
+  // if (isNeedyWithLogin != null) return res.status(403).send({ message: "Пользователь с таким логином уже существует" })
+  // if (isNeedyWithPhone != null) return res.status(403).send({ message: "Пользователь с таким телефоном уже существует" })
 
   const salt = await bcrypt.genSalt(10)
   const password = await bcrypt.hash(req.body.password, salt);

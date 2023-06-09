@@ -2,7 +2,7 @@ const Needy = require("../models/Needy")
 const Giver = require("../models/Giver")
 
 module.exports.getPinMarket = async (req, res) => {
-  if (req.query.typeUser == "setter") {
+  if (req.query.typeUser == "giver") {
     try {
       let giver = await Giver.findById(req.query.userID)
       if (giver?.market == null) return res.status(404).send({ message: "Error" })

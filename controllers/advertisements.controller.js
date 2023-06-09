@@ -82,7 +82,7 @@ module.exports.create = async (req, res) => {
   try {
     const info = req.body
     
-    await Advertisement.findOneAndUpdate({ authorID: info.authorID, isSuccessDone: false }, { isSuccessDone: true }, { new: true })
+    await Advertisement.findOneAndUpdate({ authorID: info.authorID, isSuccessDone: false }, { isSuccessDone: true })
 
     const advertID = generateRandomString(10)
     const advertisement = new Advertisement({ 
@@ -134,7 +134,7 @@ module.exports.getActiveByMarket = async (req, res) => {
 module.exports.gettingProduct = async (req, res) => {
   try {
     const result = await Advertisement.findOneAndUpdate({ isSuccessDone: false, authorID: req.body.authorID }, 
-      { userDoneID: req.body.userDoneID, gettingProductID: req.body.gettingProductID, dateDone: dayjs().tz("Europe/Moscow").format('YYYY-MM-DD HH:mm:ss') }, { new: true })
+      { userDoneID: req.body.userDoneID, gettingProductID: req.body.gettingProductID, dateDone: dayjs().tz("Europe/Moscow").format('YYYY-MM-DD HH:mm:ss') })
     
     if (result == null) return res.status(404).send({ message: "NotFound" })
     res.status(200).send(result)
@@ -147,7 +147,7 @@ module.exports.gettingProduct = async (req, res) => {
 module.exports.cancelGettingProduct = async (req, res) => {
   try {
     const result = await Advertisement.findOneAndUpdate({ isSuccessDone: false, authorID: req.body.authorID }, 
-      { isSuccessDone: true, userDoneID: "" }, { new: true })
+      { isSuccessDone: true, userDoneID: "" })
     
     if (result == null) return res.status(404).send({ message: "NotFound" })
     res.status(201).send(result)
@@ -160,7 +160,7 @@ module.exports.cancelGettingProduct = async (req, res) => {
 module.exports.finishGettingProduct = async (req, res) => {
   try {
     const result = await Advertisement.findOneAndUpdate({ isSuccessDone: false, authorID: req.body.authorID }, 
-      { isSuccessDone: true }, { new: true })
+      { isSuccessDone: true })
     
     if (result == null) return res.status(404).send({ message: "NotFound" })
     res.status(201).send(result)

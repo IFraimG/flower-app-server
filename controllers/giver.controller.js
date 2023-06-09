@@ -53,7 +53,7 @@ module.exports.editProfile = async (req, res) => {
 
 module.exports.changeToken = async (req, res) => {
   try {
-    let giver = await Giver.findByIdAndUpdate(req.body.userID, { fcmToken: req.body.token }, { new: true }).exec()
+    let giver = await Giver.findByIdAndUpdate(req.body.userID, { fcmToken: req.body.token }).exec()
     if (giver == null) return res.status(404).send({ message: "NotFound" })
     
     return res.status(200).send(giver)

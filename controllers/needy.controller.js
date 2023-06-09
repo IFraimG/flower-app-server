@@ -53,7 +53,7 @@ module.exports.getToken = async (req, res) => {
 
 module.exports.changeToken = async (req, res) => {
   try {
-    let needy = await Needy.findByIdAndUpdate(req.body.userID, { fcmToken: req.body.token }, { new: true }).exec()
+    let needy = await Needy.findByIdAndUpdate(req.body.userID, { fcmToken: req.body.token }).exec()
     if (needy == null) return res.status(404).send({ message: "NotFound" })
     
     res.status(200).send(needy)

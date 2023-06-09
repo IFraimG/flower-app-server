@@ -43,7 +43,7 @@ module.exports.createNotification = async (req, res) => {
 
 module.exports.setRead = async (req, res) => {
     try {
-        const notification = await Notification.findByIdAndUpdate(req.body.notificationID, { isRead: true }, { new: true })
+        const notification = await Notification.findByIdAndUpdate(req.body.notificationID, { isRead: true })
         if (notification == null) return res.status(404).send({ message: "NotFound" })
         res.status(200).send(notification)
     } catch (error) {

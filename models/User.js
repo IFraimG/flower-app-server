@@ -1,7 +1,11 @@
 const mongoose = require("mongoose")
 
-const GiverSchema = new mongoose.Schema({
-    login: {
+const UserSchema = new mongoose.Schema({
+    name: {
+        type: String,
+        required: true
+    },
+    email: {
         type: String,
         required: true
     },
@@ -9,22 +13,23 @@ const GiverSchema = new mongoose.Schema({
         type: String,
         required: true
     },
-    phone: {
-        type: String,
-        required: true
-    },
-    market: {
+    photo: {
         type: String,
         required: false
     },
-    authID: {
+    scores: {
+        type: Number,
+        required: false,
+        default: 200
+    },
+    id: {
         type: String,
         required: true
     },
-    fcmToken: {
-        type: String,
+    habitsList: {
+        type: [String],
         required: false
     }
 })
 
-module.exports = mongoose.model("Giver", GiverSchema)
+module.exports = mongoose.model("User", UserSchema)

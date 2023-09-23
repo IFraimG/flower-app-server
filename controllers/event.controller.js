@@ -51,5 +51,5 @@ module.exports.addUserToEvent = async (req, res) => {
 
 module.exports.getEventsList = async (req, res) => {
   let result = await Event.find({}).exec()
-  res.send(result)
+  res.send({item: result})
 }

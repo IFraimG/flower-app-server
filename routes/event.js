@@ -8,5 +8,6 @@ router.post("/create", upload.array("img"), passport.authenticate('jwt', { sessi
 router.delete("/delete", passport.authenticate('jwt', { session: false }), eventController.delete)
 router.get("/getEventByID", passport.authenticate('jwt', { session: false }), eventController.getEventByID)
 router.put("/addUserToEvent", passport.authenticate('jwt', { session: false }), eventController.addUserToEvent)
+router.get("/all", passport.authenticate('jwt', { session: false }), eventController.getEventsList)
 
 module.exports = router;

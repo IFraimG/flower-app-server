@@ -4,6 +4,7 @@ const generateRandomString = require("../utils/generateRandomString.js")
 // {id, title, img, description, time, place, authorID, scores, maxUsers, currentUsers }
 module.exports.create = async (req, res) => {
   try {
+    console.log(req);
     let event = await Event.create({ 
         title: req.body.title,
         photo: req.files[0].filename,
@@ -48,3 +49,7 @@ module.exports.addUserToEvent = async (req, res) => {
   }
 }
 
+module.exports.getEventsList = async (req, res) => {
+  let result = await Event.find({}).exec()
+  res.send(result)
+}

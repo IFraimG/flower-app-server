@@ -15,7 +15,9 @@ module.exports.create = async (req, res) => {
         scores: Number.parseInt(req.body.scores),
         maxUsers: Number.parseInt(req.body.maxUsers),
         currentUsers: Number.parseInt(req.body.currentUsers),
-        eventID: generateRandomString(10)
+        eventID: generateRandomString(10),
+        longt: Number.parseInt(req.body.longt),
+        lat: Number.parseInt(req.body.lat)
     })
     let result = await event.save()
     res.send(result)
@@ -52,4 +54,8 @@ module.exports.addUserToEvent = async (req, res) => {
 module.exports.getEventsList = async (req, res) => {
   let result = await Event.find({}).exec()
   res.send({item: result})
+}
+
+module.exports.findTheNearestEvents = async (req, res) => {
+  
 }

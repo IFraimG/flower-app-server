@@ -44,6 +44,14 @@ const EventSchema = new mongoose.Schema({
     usersList: {
         type: [String],
         required: false
+    },
+    lat: {
+        type: mongoose.Types.Decimal128,
+        required: false
+    },
+    longt: {
+        type: mongoose.Types.Decimal128,
+        required: false
     }
 })
 

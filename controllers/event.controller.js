@@ -16,8 +16,8 @@ module.exports.create = async (req, res) => {
         maxUsers: Number.parseInt(req.body.maxUsers),
         currentUsers: Number.parseInt(req.body.currentUsers),
         eventID: generateRandomString(10),
-        longt: Number.parseInt(req.body.longt),
-        lat: Number.parseInt(req.body.lat)
+        longt: parseFloat(req.body.longt),
+        lat: parseFloat(req.body.lat)
     })
     let result = await event.save()
     res.send(result)
@@ -57,5 +57,5 @@ module.exports.getEventsList = async (req, res) => {
 }
 
 module.exports.findTheNearestEvents = async (req, res) => {
-  
+
 }

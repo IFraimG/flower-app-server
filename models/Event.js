@@ -46,11 +46,11 @@ const EventSchema = new mongoose.Schema({
         required: false
     },
     lat: {
-        type: mongoose.Types.Decimal128,
+        type: Number,
         required: false
     },
     longt: {
-        type: mongoose.Types.Decimal128,
+        type: Number,
         required: false
     }
 })

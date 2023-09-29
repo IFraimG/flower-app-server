@@ -55,7 +55,3 @@ module.exports.getEventsList = async (req, res) => {
   let result = await Event.find({}).exec()
   res.send({item: result})
 }
-
-module.exports.findTheNearestEvents = async (req, res) => {
-
-}

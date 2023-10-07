@@ -8,6 +8,8 @@ module.exports.addPhoto = async (req, res) => {
     let user = await User.findOne({id: req.user.id}).exec()
     user.photo = req.file.filename
   
+    console.log(req.file.filename);
+
     let result = await user.save()
     res.status(200).send(result) 
   } catch (err) {

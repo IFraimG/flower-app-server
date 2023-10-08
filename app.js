@@ -14,6 +14,7 @@ const userRouter = require('./routes/user');
 const taskRouter = require('./routes/task');
 const eventRouter = require('./routes/event');
 const guideRouter = require('./routes/guide');
+const habitRouter = require('./routes/habits');
 
 const app = express();
 
@@ -32,6 +33,7 @@ app.use('/users', userRouter);
 app.use('/tasks', taskRouter);
 app.use('/events', eventRouter);
 app.use('/guides', guideRouter);
+app.use("/habits", habitRouter)
 
 const http = require("http")
 const server = http.createServer(app)

@@ -36,5 +36,23 @@ app.use('/guides', guideRouter);
 const http = require("http")
 const server = http.createServer(app)
 
+const moment = require('moment-timezone');
+const Habit = require("./models/Habit")
+
+function checkTime() {
+  const moscowTime = moment().tz('Europe/Moscow');
+  const currentTime = moscowTime.format('HH:mm');
+
+  if (currentTime === '12:00') {
+    let habits = Habit.find({}).exec()
+    habits.forEach(item => {
+        item.isDone = false
+        item.save()
+    })
+  }
+}
+
+setInterval(checkTime, 60000);
+
 // server.listen(process.env.PORT || 3000, "192.168.0.101", () => console.log("сервер запущен 8000"))
 server.listen(process.env.PORT || 8080, () => console.log("сервер запущен 8000"))   

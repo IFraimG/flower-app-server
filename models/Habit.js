@@ -12,6 +12,19 @@ const HabitSchema = new mongoose.Schema({
     type: {
         type: String,
         required: true
+    },
+    habitID: {
+        type: String,
+        required: true
+    },
+    authorID: {
+        type: String,
+        required: true
+    },
+    isDone: {
+        type: Boolean,
+        required: false,
+        default: false
     }
 })
 

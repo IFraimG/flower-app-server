@@ -40,7 +40,7 @@ module.exports.habitUpdate = async (req, res) => {
   let result = await Habit.findOne({habitID: req.body.habitID}).exec()
   if (result == null) res.status(404).send("Not Found")
   else {
-    result.isDone = req.body.isDone
+    result.isDone = true
     await result.save()
     res.send(result)
   }

@@ -4,9 +4,10 @@ const habitController = require("../controllers/habit.controller.js")
 let upload = require("../configs/upload.js")
 let passport = require("../configs/passportConfig.js")
 
-// router.post("/create", upload.array("img"), passport.authenticate('jwt', { session: false }), guideController.create)
-// router.delete("/delete", passport.authenticate('jwt', { session: false }), guideController.delete)
-// router.get("/getGuideByID", passport.authenticate('jwt', { session: false }), guideController.getGuideByID)
-// router.put("/change_guide", upload.array("img"), passport.authenticate('jwt', { session: false }), guideController.update)
+router.post("/create", passport.authenticate('jwt', { session: false }), habitController.create)
+router.delete("/delete", passport.authenticate('jwt', { session: false }), habitController.delete)
+router.get("/getList", passport.authenticate('jwt', { session: false }), habitController.getHabitsList)
+router.get("/getHabitsByType", passport.authenticate('jwt', { session: false }), habitController.getHabitsByType)
+router.put("/habitUpdate", passport.authenticate('jwt', { session: false }), habitController.habitUpdate)
 
 module.exports = router;

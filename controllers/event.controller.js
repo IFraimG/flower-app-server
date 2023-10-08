@@ -16,7 +16,7 @@ module.exports.create = async (req, res) => {
         maxUsers: Number.parseInt(req.body.maxUsers),
         currentUsers: Number.parseInt(req.body.currentUsers),
         eventID: generateRandomString(10),
-        usersList: [req.bpdy.authorID],
+        usersList: [req.body.authorID],
         longt: parseFloat(req.body.longt),
         lat: parseFloat(req.body.lat)
     })

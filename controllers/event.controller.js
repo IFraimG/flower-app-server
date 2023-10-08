@@ -81,6 +81,6 @@ module.exports.findNearestEventsByAuthorCoords = async (req, res) => {
       return Math.sqrt(Math.pow(item.lat - req.query.lat, 2) + Math.pow(item.longt - req.query.longt, 2))
     })
 
-    res.send(arr)
+    res.send({item: arr})
   } else res.status(404).send("Not Found")
 }

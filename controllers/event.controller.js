@@ -66,3 +66,9 @@ module.exports.getEventsList = async (req, res) => {
   let result = await Event.find({}).exec()
   res.send({item: result})
 }
+
+module.exports.findEventsByAuthorID = async (req, res) => {
+  let result = await Event.find({ usersList: req.query.authorID }).exec()
+  if (result != null) res.send({item: result})
+  else res.status(404).send("Not Found")
+}

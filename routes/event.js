@@ -10,5 +10,6 @@ router.get("/getEventByID", passport.authenticate('jwt', { session: false }), ev
 router.put("/addUserToEvent", passport.authenticate('jwt', { session: false }), eventController.addUserToEvent)
 router.get("/all", passport.authenticate('jwt', { session: false }), eventController.getEventsList)
 router.put("/removeUserToEvent", passport.authenticate("jwt", { session: false }), eventController.refusePeople)
+router.get("/findEventsByAuthorID", passport.authenticate('jwt', {session: false}), eventController.findEventsByAuthorID)
 
 module.exports = router;

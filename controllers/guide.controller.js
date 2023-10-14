@@ -53,7 +53,7 @@ module.exports.update = async (req, res) => {
 }
 
 module.exports.getSavedGuides = async (req, res) => {
-  let user = await User.findOne({ authorID: req.query.authorID }).exec()
+  let user = await User.findOne({ id: req.query.authorID }).exec()
 
   if (user == null) res.status(404).send("Not Found")
   else {

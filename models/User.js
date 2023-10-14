@@ -29,6 +29,10 @@ const UserSchema = new mongoose.Schema({
     habitsList: {
         type: [String],
         required: false
+    },
+    guidesList: {
+        type: [String],
+        required: false
     }
 })
 

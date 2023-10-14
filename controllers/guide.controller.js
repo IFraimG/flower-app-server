@@ -45,7 +45,6 @@ module.exports.update = async (req, res) => {
         title: req.body.title,
         photo: req.files[0].filename,
         description: req.body.description,
-        authorID: req.body.authorID,
         source: req.body.source
     }).exec()
 

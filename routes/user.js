@@ -11,5 +11,6 @@ router.get("/get_user", passport.authenticate('jwt', { session: false }), usersC
 router.put("/add_habit", passport.authenticate('jwt', { session: false }), usersController.addHabit)
 router.delete("/remove_habit", passport.authenticate('jwt', { session: false }), usersController.removeHabit)
 router.get("/get_habit_by_title", passport.authenticate('jwt', { session: false }), usersController.getHabitByTitle)
+router.put("/update_guide_to_user", passport.authenticate('jwt', { session: false }), usersController.updateGuideToUser)
 
 module.exports = router;

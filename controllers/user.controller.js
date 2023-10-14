@@ -92,3 +92,14 @@ module.exports.getHabitByTitle = async (req, res) => {
   if (habit != null) res.send(habit)
   else res.status(404).send("not found")
 }
+
+module.exports.updateGuideToUser = async (req, res) => {
+  let user = await User.findOne({ id: req.body.userID }).exec()
+  if (user != null) {
+    let index = user.guidesList.findIndex(item => item == req.body.guideID)
+    if (index != -1) user.guidesList.splice(index, 1)
+    else user.guidesList.push(req.body.guideID)
+    res.status(200).send(user)
+  }
+  else res.status(404).send("not found")
+}

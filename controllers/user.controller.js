@@ -98,11 +98,10 @@ module.exports.updateGuideToUser = async (req, res) => {
   if (user != null) {
     let index = user.guidesList.findIndex(item => item == req.body.guideID)
     if (index != -1) user.guidesList.splice(index, 1)
-    else {
-      user.guidesList.push(req.body.guideID)
-      await user.save()
-      res.status(200).send(user)
-    }
+    else user.guidesList.push(req.body.guideID)
+
+    await user.save()
+    res.status(200).send(user)
   }
   else res.status(404).send("not found")
 }

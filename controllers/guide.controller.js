@@ -1,4 +1,5 @@
 const Guide = require("../models/Guide")
+const User = require("../models/User")
 const generateRandomString = require("../utils/generateRandomString.js")
 
 // {id, title, img, description, time, place, authorID, scores, maxUsers, currentUsers }
@@ -49,4 +50,19 @@ module.exports.update = async (req, res) => {
     }).exec()
 
     res.status(204).send(result)
+}
+
+module.exports.getSavedGuides = async (req, res) => {
+  let user = await User.findOne({ authorID: req.query.authorID }).exec()
+
+  if (result == null) res.status(404).send("Not Found")
+  else {
+    let arr = []
+    for (let guideID of user.guidesList) {
+      let guide = await Guide.findOne({ guideID: guideID }).exec()
+      if (guide != null) arr.push(guide)
+    }
+    
+    res.send({ item: arr })
+  }
 }

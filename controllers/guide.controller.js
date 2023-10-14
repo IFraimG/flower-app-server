@@ -34,6 +34,12 @@ module.exports.getGuideByID = async (req, res) => {
   else res.send(result)
 }
 
+module.exports.getGuides = async (req, res) => {
+  let result = await Guide.find({}).exec()
+  if (result == null) res.status(404).send("Not Found")
+  else res.send(result)
+}
+
 module.exports.update = async (req, res) => {
     let result = await Guide.findOneAndUpdate({guideID: req.query.id}, {
         title: req.body.title,

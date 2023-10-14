@@ -74,6 +74,12 @@ module.exports.findEventsByAuthorID = async (req, res) => {
   else res.status(404).send("Not Found")
 }
 
+module.exports.findAuthorsEvents = async (req, res) => {
+  let result = await Event.find({ authorID: req.query.authorID }).exec()
+  if (result != null) res.send({item: result})
+  else res.status(404).send("Not Found")
+}
+
 module.exports.findNearestEventsByAuthorCoords = async (req, res) => {
   let result = await Event.find({}).exec()
   if (result != null) {

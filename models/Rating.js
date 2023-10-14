@@ -14,7 +14,7 @@ const RatingSchema = new mongoose.Schema({
         required: true
     },
     ratingID: {
-        type: Number,
+        type: String,
         required: true
     }
 })

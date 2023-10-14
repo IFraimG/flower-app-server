@@ -55,7 +55,7 @@ module.exports.update = async (req, res) => {
 module.exports.getSavedGuides = async (req, res) => {
   let user = await User.findOne({ authorID: req.query.authorID }).exec()
 
-  if (result == null) res.status(404).send("Not Found")
+  if (user == null) res.status(404).send("Not Found")
   else {
     let arr = []
     for (let guideID of user.guidesList) {

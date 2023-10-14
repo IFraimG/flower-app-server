@@ -56,7 +56,7 @@ module.exports.refusePeople = async (req, res) => {
   let result = await Event.findOne({ eventID: req.body.eventID }).exec()
   if (result == null) res.status(404).send("Not Found")
   else {
-    let index = result.usersList.findIndex(req.body.authorID)
+    let index = result.usersList.findIndex(item => item == req.body.authorID)
     if (index != -1) result.usersList.splice(index, 1)
     await result.save()
     res.send(result)

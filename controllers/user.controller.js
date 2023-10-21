@@ -20,7 +20,7 @@ module.exports.addPhoto = async (req, res) => {
 
 module.exports.changeScores = async (req, res) => {
   try {
-    let user = await User.findOne({id: req.user.id}).exec()
+    let user = await User.findOne({id: req.body.id}).exec()
     user.scores = Number.parseInt(user.scores) + Number.parseInt(req.body.scores)
   
     let result = await user.save()

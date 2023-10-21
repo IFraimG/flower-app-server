@@ -1,4 +1,5 @@
 const Event = require("../models/Event")
+const User = require("../models/User")
 const generateRandomString = require("../utils/generateRandomString.js")
 
 // {id, title, img, description, time, place, authorID, scores, maxUsers, currentUsers }
@@ -89,4 +90,21 @@ module.exports.findNearestEventsByAuthorCoords = async (req, res) => {
 
     res.send({item: arr})
   } else res.status(404).send("Not Found")
+}
+
+module.exports.getUsersFromEvents = async (req, res) => {
+  try {
+    let result = await Event.findOne({ eventID: req.query.eventID }).exec()
+    let arr = []
+    for (let userID of result.usersList) {
+      if (userID != req.query.authorID) {
+        let user = await User.findOne({ id: userID }).exec()
+        if (user != null) arr.push(user)
+      }
+    }
+
+    res.send({ item: arr })
+  } catch (err) {
+    res.status(400).send(err.message)
+  }
 }

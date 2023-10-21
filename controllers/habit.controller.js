@@ -1,14 +1,19 @@
 const Habit = require("../models/Habit")
 const generateRandomString = require("../utils/generateRandomString.js")
+const { format, differenceInDays } = require('date-fns'); 
 
 module.exports.create = async (req, res) => {
   try {
+    const currentDate = new Date();
+    const formattedDate = format(currentDate, 'dd.MM.yy');
+
     let habit = await Habit.create({ 
         title: req.body.title,
         frequency: req.body.frequency,
         type: req.body.type,
         habitID: generateRandomString(20),
-        authorID: req.body.authorID
+        authorID: req.body.authorID,
+        dateOfCreated: formattedDate
     })
 
     let result = await habit.save()
@@ -31,7 +36,31 @@ module.exports.getHabitsList = async (req, res) => {
 }
 
 module.exports.getHabitsByType = async (req, res) => {
-  let result = await Habit.find({type: req.query.type, authorID: req.query.authorID}).exec()
+  const currentDate = new Date();
+  const formattedDate = format(currentDate, 'dd.MM.yy');
+  const formattedTimeWeek = format(currentDate, 'MM.yy');
+
+  if (req.query.type == "daily") {
+    let result = await Habit.find({type: req.query.type, authorID: req.query.authorID, dateOfCreated: formattedDate}).exec()
+    if (result == null) res.status(404).send("Not Found")
+    else res.send({ item: result })
+  } else if (req.query.type == "weekly") {
+    let result = await Habit.find({ type: req.query.type, authorID: req.query.authorID, dateOfCreated: { $regex: formattedTimeWeek, $options: 'i' } }).exec()
+    if (result == null) res.status(404).send("Not Found")
+    else {
+      let arr = []
+      for (let item of result) {
+        const date1 = parse(formattedDate, 'dd.MM.yy', new Date());
+        const date2 = parse(item.dateOfCreated, 'dd.MM.yy', new Date());
+        if (differenceInDays(date1, date2) < 7) {
+          arr.push(item)
+        }
+      }
+
+      res.send({ item: arr })
+    }
+  }
+  
   if (result == null) res.status(404).send("Not Found")
   else res.send({item: result})
 }

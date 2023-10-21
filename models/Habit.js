@@ -25,6 +25,10 @@ const HabitSchema = new mongoose.Schema({
         type: Boolean,
         required: false,
         default: false
+    },
+    dateOfCreated: {
+        type: String,
+        required: false
     }
 })
 

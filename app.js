@@ -38,23 +38,45 @@ app.use("/habits", habitRouter)
 const http = require("http")
 const server = http.createServer(app)
 
-// const moment = require('moment-timezone');
-// const Habit = require("./models/Habit")
+const Habit = require("./models/Habit")
 
-// function checkTime() {
-//   const moscowTime = moment().tz('Europe/Moscow');
-//   const currentTime = moscowTime.format('HH:mm');
+const cron = require('node-cron');
+const { parse, format, subDays, getISOWeek } = require('date-fns');
 
-//   if (currentTime === '12:00') {
-//     let habits = Habit.find({}).exec()
-//     habits.forEach(item => {
-//         item.isDone = false
-//         item.save()
-//     })
-//   }
-// }
+cron.schedule('0 0 * * *', async () => {
+    const currentDate = new Date();
+    const datePrev = subDays(currentDate, 1)
+    const previousDayString = format(datePrev, 'dd.MM.yy');
 
-// setInterval(checkTime, 60000);
+    const formattedDate = format(currentDate, 'dd.MM.yy');
+
+    let habits = await Habit.find({ dateOfCreated: previousDayString }).exec()
+    if (habits != null) {
+        habits.forEach(item => {
+          let newHabit = { ...item, isDone: false, dateOfCreated: formattedDate }
+          Habit.create(newHabit).then(res => res.save())
+        })
+    }
+});
+
+cron.schedule('0 0 * * 1', () => {
+    const currentDate = new Date();
+
+    const formattedDate = format(currentDate, 'dd.MM.yy');
+    Habit.find({ type: req.query.type, authorID: req.query.authorID, dateOfCreated: { $regex: formattedTimeWeek, $options: 'i' } }).then(result => {
+        if (result == null) res.status(404).send("Not Found")
+        else {
+          for (let item of result) {
+            const date1 = parse(item.dateOfCreated, 'dd.MM.yy', new Date());
+            const previousWeekNumber = getISOWeek(date1)
+            if (previousWeekNumber == getISOWeek(currentDate) - 1) {
+                let newItem = { ...item, dateOfCreated: formattedDate, isDone: false }
+                Habit.create(newItem).then(res1 => res1.save())
+            }
+          }
+        }
+    })
+});
 
 // server.listen(process.env.PORT || 3000, "192.168.0.101", () => console.log("сервер запущен 8000"))
 server.listen(process.env.PORT || 8080, () => console.log("сервер запущен 8000"))   

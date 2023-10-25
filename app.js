@@ -42,8 +42,13 @@ const Habit = require("./models/Habit")
 
 const cron = require('node-cron');
 const { parse, format, subDays, getISOWeek } = require('date-fns');
+const moment = require('moment-timezone');
 
-const schedule = '35 12 * * *';
+const moscowTime = moment.tz('12:45', 'HH:mm', 'Europe/Moscow');
+const utcTime = moscowTime.clone().utc();
+
+const schedule = `${utcTime.minute()} ${utcTime.hour()} * * *`;
+
 let foo = '0 0 * * *'
 cron.schedule(schedule, async () => {
     const currentDate = new Date();

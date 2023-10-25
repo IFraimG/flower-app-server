@@ -64,9 +64,6 @@ cron.schedule(schedule, async () => {
           Habit.create(newHabit).then(res => res.save())
         })
     }
-}, {
-  scheduled: true,
-  timezone: "Russia/Moscow"
 });
 
 cron.schedule('0 0 * * 1', () => {

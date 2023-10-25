@@ -43,7 +43,9 @@ const Habit = require("./models/Habit")
 const cron = require('node-cron');
 const { parse, format, subDays, getISOWeek } = require('date-fns');
 
-cron.schedule('0 0 * * *', async () => {
+const schedule = '25 12 * * *';
+let foo = '0 0 * * *'
+cron.schedule(schedule, async () => {
     const currentDate = new Date();
     const datePrev = subDays(currentDate, 1)
     const previousDayString = format(datePrev, 'dd.MM.yy');

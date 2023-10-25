@@ -44,7 +44,7 @@ const cron = require('node-cron');
 const { parse, format, subDays, getISOWeek } = require('date-fns');
 const moment = require('moment-timezone');
 
-const moscowTime = moment.tz('12:53', 'HH:mm', 'Europe/Moscow');
+const moscowTime = moment.tz('13:05', 'HH:mm', 'Europe/Moscow');
 const utcTime = moscowTime.clone().utc();
 
 const schedule = `${utcTime.minute()} ${utcTime.hour()} * * *`;
@@ -54,16 +54,21 @@ cron.schedule(schedule, () => {
     const currentDate = new Date();
     const datePrev = subDays(currentDate, 1)
     const previousDayString = format(datePrev, 'dd.MM.yy');
+    console.log(previousDayString);
+    console.log(previousDayString);
+    console.log(previousDayString);
+    console.log(previousDayString);
+    console.log(previousDayString);
 
     const formattedDate = format(currentDate, 'dd.MM.yy');
 
     Habit.find({ dateOfCreated: previousDayString }).then(habits => {
       if (habits != null) {
-        habits.forEach(item => {
-          let newHabit = { ...item, isDone: false, dateOfCreated: formattedDate }
-          Habit.create(newHabit).then(res => res.save())
-        })
-    }
+          habits.forEach(item => {
+            let newHabit = { ...item, isDone: false, dateOfCreated: formattedDate }
+            Habit.create(newHabit).then(res => res.save())
+          })
+      }
     })
 });
 

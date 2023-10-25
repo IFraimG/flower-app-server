@@ -76,9 +76,21 @@ module.exports.getStatistics = async (req, res) => {
   let fullListHabits = await Habit.find({ authorID: req.query.authorID, type: req.query.type }).exec()
   if (fullListHabits == null) res.status(404).send("Not Found")
   else {
-    let arr = []
+    let result = {}
     fullListHabits.map(item => {
       const date = parse(item.dateOfCreated, 'dd.MM.yy', new Date())
+      if (!result.hasOwnProperty(item.dateOfCreated)) {
+        result[item.dateOfCreated] = { count: 0, maxCount: 0}
+      }
+      result[item.dateOfCreated].maxCount++
+      if (item.isDone) result[item.dateOfCreated].count++
     })
+
+    let arr = []
+    for (let [key, value] in Object.entries(result)) {
+      arr.push({ date: key, count: value.count, maxCount: value.maxCount })
+    }
+
+    res.send({ item: arr })
   }
 }

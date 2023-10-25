@@ -9,5 +9,6 @@ router.delete("/delete", passport.authenticate('jwt', { session: false }), habit
 router.get("/getList", passport.authenticate('jwt', { session: false }), habitController.getHabitsList)
 router.get("/getHabitsByType", passport.authenticate('jwt', { session: false }), habitController.getHabitsByType)
 router.put("/habitUpdate", passport.authenticate('jwt', { session: false }), habitController.habitUpdate)
+router.get("/getStatictics", passport.authenticate('jwt', { session: false }), habitController.getStatistics)
 
 module.exports = router;

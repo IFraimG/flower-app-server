@@ -44,7 +44,7 @@ const cron = require('node-cron');
 const { parse, format, subDays, getISOWeek } = require('date-fns');
 const moment = require('moment-timezone');
 
-const moscowTime = moment.tz('13:05', 'HH:mm', 'Europe/Moscow');
+const moscowTime = moment.tz('13:17', 'HH:mm', 'Europe/Moscow');
 const utcTime = moscowTime.clone().utc();
 
 const schedule = `${utcTime.minute()} ${utcTime.hour()} * * *`;

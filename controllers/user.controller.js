@@ -43,16 +43,16 @@ module.exports.editProfile = async (req, res) => {
   try {
     let user = await User.findOne({id: req.user.id}).exec()
 
-    const match = await bcrypt.compare(req.body.old_password, user.password);
-    if (!match) return res.status(400).send({ message: "Incorrect Password" })
+    // const match = await bcrypt.compare(req.body.old_password, user.password);
+    // if (!match) return res.status(400).send({ message: "Incorrect Password" })
 
     user.name = req.body.name
 
-    const salt = await bcrypt.genSalt(10)
-    const password = await bcrypt.hash(req.body.new_password, salt);
-    user.password = password
+    // const salt = await bcrypt.genSalt(10)
+    // const password = await bcrypt.hash(req.body.new_password, salt);
+    // user.password = password
 
-    if (req.files[0]?.filename != null) user.photo = "uploads/" + req.files[0].filename
+    // if (req.files[0]?.filename != null) user.photo = "uploads/" + req.files[0].filename
 
     const result = await user.save()
     res.status(201).send(result)

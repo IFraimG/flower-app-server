@@ -78,9 +78,9 @@ module.exports.getStatistics = async (req, res) => {
   else {
     let result = {}
     fullListHabits.map(item => {
-      const date = parse(item.dateOfCreated, 'dd.MM.yy', new Date())
+      const date = item.dateOfCreated.split(".")
       if (!result.hasOwnProperty(item.dateOfCreated)) {
-        result[item.dateOfCreated] = { count: 0, maxCount: 0, day: getDay(date), month: getMonth(date), year: getYear(date) }
+        result[item.dateOfCreated] = { count: 0, maxCount: 0, day: parseInt(date[0]), month: parseInt(date[1]), year: parseInt(date[2]) }
       }
       result[item.dateOfCreated].maxCount++
       if (item.isDone) result[item.dateOfCreated].count++

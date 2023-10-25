@@ -88,7 +88,7 @@ module.exports.getStatistics = async (req, res) => {
 
     let arr = []
     for (let [key, value] of Object.entries(result)) {
-      arr.push({ date: key, count: value.count, maxCount: value.maxCount })
+      arr.push({ date: key, count: value.count, maxCount: value.maxCount, day: value.day, month: value.month, year: value.year })
     }
 
     res.send({ item: arr })

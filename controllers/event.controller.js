@@ -83,13 +83,13 @@ module.exports.findAuthorsEvents = async (req, res) => {
 
 module.exports.findNearestEventsByAuthorCoords = async (req, res) => {
   let result = await Event.find({}).exec()
-  if (result != null) {
+  if (result != null && (req.query.lat != 0 || req.query.longt != 0)) {
     let arr = result.sort(item => {
       return Math.sqrt(Math.pow(item.lat - req.query.lat, 2) + Math.pow(item.longt - req.query.longt, 2))
     })
 
     res.send({item: arr})
-  } else res.status(404).send("Not Found")
+  } else res.send({ item: result })
 }
 
 module.exports.getUsersFromEvents = async (req, res) => {

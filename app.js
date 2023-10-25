@@ -43,7 +43,7 @@ const Habit = require("./models/Habit")
 const cron = require('node-cron');
 const { parse, format, subDays, getISOWeek } = require('date-fns');
 
-const schedule = '25 12 * * *';
+const schedule = '35 12 * * *';
 let foo = '0 0 * * *'
 cron.schedule(schedule, async () => {
     const currentDate = new Date();
@@ -59,6 +59,9 @@ cron.schedule(schedule, async () => {
           Habit.create(newHabit).then(res => res.save())
         })
     }
+}, {
+  scheduled: true,
+  timezone: "Russia/Moscow"
 });
 
 cron.schedule('0 0 * * 1', () => {

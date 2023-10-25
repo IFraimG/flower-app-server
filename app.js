@@ -50,15 +50,10 @@ const utcTime = moscowTime.clone().utc();
 const schedule = `${utcTime.minute()} ${utcTime.hour()} * * *`;
 
 let foo = '0 0 * * *'
-cron.schedule(schedule, () => {
+cron.schedule(foo, () => {
     const currentDate = new Date();
     const datePrev = subDays(currentDate, 1)
     const previousDayString = format(datePrev, 'dd.MM.yy');
-    console.log(previousDayString);
-    console.log(previousDayString);
-    console.log(previousDayString);
-    console.log(previousDayString);
-    console.log(previousDayString);
 
     const formattedDate = format(currentDate, 'dd.MM.yy');
 

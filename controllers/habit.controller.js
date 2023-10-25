@@ -1,6 +1,6 @@
 const Habit = require("../models/Habit")
 const generateRandomString = require("../utils/generateRandomString.js")
-const { format, differenceInDays } = require('date-fns'); 
+const { format, differenceInDays, getDay, getMonth, getYear } = require('date-fns'); 
 
 module.exports.create = async (req, res) => {
   try {
@@ -60,9 +60,6 @@ module.exports.getHabitsByType = async (req, res) => {
       res.send({ item: arr })
     }
   }
-  
-  if (result == null) res.status(404).send("Not Found")
-  else res.send({item: result})
 }
 
 module.exports.habitUpdate = async (req, res) => {
@@ -72,5 +69,16 @@ module.exports.habitUpdate = async (req, res) => {
     result.isDone = true
     await result.save()
     res.send(result)
+  }
+}
+
+module.exports.getStatistics = async (req, res) => {
+  let fullListHabits = await Habit.find({ authorID: req.query.authorID, type: req.query.type }).exec()
+  if (fullListHabits == null) res.status(404).send("Not Found")
+  else {
+    let arr = []
+    fullListHabits.map(item => {
+      const date = parse(item.dateOfCreated, 'dd.MM.yy', new Date())
+    })
   }
 }

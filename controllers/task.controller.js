@@ -1,13 +1,20 @@
 const Task = require("../models/Task")
+const User = require("../models/User")
 const generateRandomString = require("../utils/generateRandomString.js")
+const { format, differenceInDays, getDay, getMonth, getYear, parse } = require('date-fns'); 
 
 // {title, scores, authorID}
 module.exports.create = async (req, res) => {
     try {
+        const currentDate = new Date();
+        const formattedDate = format(currentDate, 'dd.MM.yy');
+
         let task = await Task.create({ 
             title: req.body.title,
             scores: req.body.scores,
             authorID: req.body.authorID,
+            description: req.body.description,
+            dateOfCreated: formattedDate,
             taskID: generateRandomString(10) 
         })
         let result = await task.save()
@@ -17,10 +24,22 @@ module.exports.create = async (req, res) => {
     }
 }
 
+
 // query {id}
 module.exports.delete = async (req, res) => {
-    await Task.findOneAndDelete({taskID: req.query.id}).exec()
-    res.status(204).send("Удалено")
+    try {
+        let result = await Task.findOne({taskID: req.query.taskID}).exec()
+        let user = await User.findOne({ id: req.query.userID }).exec()
+        user.scores += result.scores
+        
+        await user.save()
+        await result.deleteOne()
+
+        res.send(user)
+    } catch (error) {
+        console.log(error.message);
+        res.status(400).send(error.message)
+    }
 }
 
 // {id}
@@ -35,4 +54,21 @@ module.exports.getTasksList = async (req, res) => {
     let result = await Task.findOne({authorID: req.query.authorID}).exec()
     if (result == null) res.status(404).send("Not Found")
     else res.send(result)
+}
+
+module.exports.takeTask = async (req, res) => {
+    try {
+        let result = await Task.findOne({authorID: req.body.taskID}).exec()
+        result.userID = req.body.userID
+        result.userDescription = req.body.userDescription
+        for (let i = 0; i < req.files?.length; i++) {
+            result.images.push(req.files[i].filename)
+        }
+
+        let resResult = await result.save()
+        res.send(resResult)
+    } catch (error) {
+        console.log(error.message);
+        res.status(400).send(error.message)
+    }
 }

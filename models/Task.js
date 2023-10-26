@@ -5,6 +5,10 @@ const TaskSchema = new mongoose.Schema({
         type: String,
         required: true
     },
+    description: {
+        type: String,
+        required: false
+    },
     scores: {
         type: Number,
         required: true
@@ -16,6 +20,22 @@ const TaskSchema = new mongoose.Schema({
     authorID: {
         type: String,
         required: true
+    },
+    dateOfCreated: {
+        type: String,
+        required: true
+    },
+    images: {
+        type: [String],
+        required: false
+    },
+    userDescription: {
+        type: String,
+        required: false
+    },
+    userID: {
+        type: String,
+        required: false
     }
 })
 

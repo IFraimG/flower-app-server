@@ -2,6 +2,7 @@ const express = require('express');
 const router = express.Router();
 const taskController = require('../controllers/task.controller');
 let passport = require("../configs/passportConfig.js")
+let upload = require("../configs/upload.js")
 
 router.post("/create", passport.authenticate('jwt', { session: false }), taskController.create)
 router.get("/getTaskByID", passport.authenticate('jwt', { session: false }), taskController.getTaskByID)

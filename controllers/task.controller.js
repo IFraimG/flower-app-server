@@ -31,7 +31,7 @@ module.exports.delete = async (req, res) => {
         let result = await Task.findOne({taskID: req.query.taskID}).exec()
         let user = await User.findOne({ id: req.query.userID }).exec()
         user.scores += result.scores
-        
+
         await user.save()
         await result.deleteOne()
 
@@ -51,7 +51,7 @@ module.exports.getTaskByID = async (req, res) => {
 
 // {authorID}
 module.exports.getTasksList = async (req, res) => {
-    let result = await Task.findOne({authorID: req.query.authorID}).exec()
+    let result = await Task.find({authorID: req.query.authorID}).exec()
     if (result == null) res.status(404).send("Not Found")
     else res.send(result)
 }

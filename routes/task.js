@@ -7,6 +7,6 @@ router.post("/create", passport.authenticate('jwt', { session: false }), taskCon
 router.get("/getTaskByID", passport.authenticate('jwt', { session: false }), taskController.getTaskByID)
 router.delete("/delete", passport.authenticate('jwt', { session: false }), taskController.delete)
 router.get("/getTasksList", passport.authenticate('jwt', { session: false }), taskController.getTasksList)
-router.put("/takeTask", upload.array("img"), passport.authenticate('jwt', { session: false }), taskController.takeTask)
+router.post("/takeTask", upload.array("img"), passport.authenticate('jwt', { session: false }), taskController.takeTask)
 
 module.exports = router;

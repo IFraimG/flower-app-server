@@ -58,7 +58,7 @@ module.exports.getTasksList = async (req, res) => {
 
 module.exports.takeTask = async (req, res) => {
     try {
-        let result = await Task.findOne({authorID: req.body.taskID}).exec()
+        let result = await Task.findOne({taskID: req.body.taskID}).exec()
         result.userID = req.body.userID
         result.userDescription = req.body.userDescription
         for (let i = 0; i < req.files?.length; i++) {

@@ -20,7 +20,8 @@ module.exports.create = async (req, res) => {
         let result = await task.save()
         res.send(result) 
     } catch (err) {
-        res.status(400).send("error")
+        console.log(err.message);
+        res.status(400).send(err.message)
     }
 }
 

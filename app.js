@@ -60,8 +60,10 @@ cron.schedule(foo, () => {
     Habit.find({ dateOfCreated: previousDayString }).then(habits => {
       if (habits != null) {
           habits.forEach(item => {
-            let newHabit = { authorID: item.authorID, habitID: item.habitID, type: item.type, frequency: item.frequency, title: item.title, isDone: false, dateOfCreated: formattedDate }
-            Habit.create(newHabit).then(res => res.save())
+            if (item != null) {
+              let newHabit = { authorID: item.authorID, habitID: item.habitID, type: item.type, frequency: item.frequency, title: item.title, isDone: false, dateOfCreated: formattedDate }
+              Habit.create(newHabit).then(res => res.save())
+            }
           })
       }
     })

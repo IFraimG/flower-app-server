@@ -60,6 +60,16 @@ module.exports.getTaskByID = async (req, res) => {
     else res.send(result)
 }
 
+module.exports.getAllTasks = async (req, res) => {
+    try {
+        let result = await Task.find({}).exec()
+        res.send({ item: result })
+    } catch (error) {
+        console.log(error.message);
+        res.status(400).send(error.message)
+    }
+}
+
 // {authorID}
 module.exports.getTasksList = async (req, res) => {
     let result = await Task.find({authorID: req.query.authorID}).exec()

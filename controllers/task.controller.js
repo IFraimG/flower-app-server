@@ -54,7 +54,7 @@ module.exports.getTaskByID = async (req, res) => {
 module.exports.getTasksList = async (req, res) => {
     let result = await Task.find({authorID: req.query.authorID}).exec()
     if (result == null) res.status(404).send("Not Found")
-    else res.send(result)
+    else res.send({item: result})
 }
 
 module.exports.takeTask = async (req, res) => {

@@ -6,7 +6,8 @@ let upload = require("../configs/upload.js")
 
 router.post("/create", passport.authenticate('jwt', { session: false }), taskController.create)
 router.get("/getTaskByID", passport.authenticate('jwt', { session: false }), taskController.getTaskByID)
-router.delete("/delete", passport.authenticate('jwt', { session: false }), taskController.delete)
+router.delete("/delete", passport.authenticate('jwt', { session: false }), taskController.makeTaskDone)
+router.delete("/deleteTask", passport.authenticate('jwt', { session: false }), taskController.delete)
 router.get("/getTasksList", passport.authenticate('jwt', { session: false }), taskController.getTasksList)
 router.post("/takeTask", upload.array("img"), passport.authenticate('jwt', { session: false }), taskController.takeTask)
 

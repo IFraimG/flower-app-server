@@ -27,7 +27,7 @@ module.exports.create = async (req, res) => {
 
 
 // query {id}
-module.exports.delete = async (req, res) => {
+module.exports.makeTaskDone = async (req, res) => {
     try {
         let result = await Task.findOne({taskID: req.query.taskID}).exec()
         let user = await User.findOne({ id: req.query.userID }).exec()
@@ -37,6 +37,16 @@ module.exports.delete = async (req, res) => {
         await result.deleteOne()
 
         res.send(user)
+    } catch (error) {
+        console.log(error.message);
+        res.status(400).send(error.message)
+    }
+}
+
+module.exports.delete = async (req, res) => {
+    try {
+        await Task.findOneAndDelete({ taskID: req.query.taskID });
+        res.send("...")
     } catch (error) {
         console.log(error.message);
         res.status(400).send(error.message)

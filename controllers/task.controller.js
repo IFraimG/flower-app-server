@@ -79,7 +79,7 @@ module.exports.getTasksList = async (req, res) => {
 
 module.exports.cancelTakeTask = async (req, res) => {
     try {
-        let result = await Task.findOne({taskID: req.body.taskID}).exec()
+        let result = await Task.findOne({taskID: req.query.taskID}).exec()
         result.userID = ""
         result.userDescription = ""
         result.images = []

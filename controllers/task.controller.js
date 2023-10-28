@@ -77,6 +77,21 @@ module.exports.getTasksList = async (req, res) => {
     else res.send({item: result})
 }
 
+module.exports.cancelTakeTask = async (req, res) => {
+    try {
+        let result = await Task.findOne({taskID: req.body.taskID}).exec()
+        result.userID = ""
+        result.userDescription = ""
+        result.images = []
+
+        let resResult = await result.save()
+        res.send(resResult)
+    } catch (error) {
+        console.log(error.message);
+        res.status(400).send(error.message)
+    }
+}
+
 module.exports.takeTask = async (req, res) => {
     try {
         let result = await Task.findOne({taskID: req.body.taskID}).exec()

@@ -77,6 +77,12 @@ module.exports.getTasksList = async (req, res) => {
     else res.send({item: result})
 }
 
+module.exports.getTasksListWithUser = async (req, res) => {
+    let result = await Task.find({userID: req.query.userID}).exec()
+    if (result == null) res.status(404).send("Not Found")
+    else res.send({item: result})
+}
+
 module.exports.cancelTakeTask = async (req, res) => {
     try {
         let result = await Task.findOne({taskID: req.query.taskID}).exec()

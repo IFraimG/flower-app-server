@@ -30,7 +30,7 @@ module.exports.create = async (req, res) => {
 module.exports.makeTaskDone = async (req, res) => {
     try {
         let result = await Task.findOne({taskID: req.query.taskID}).exec()
-        let user = await User.findOne({ id: req.query.userID }).exec()
+        let user = await User.findOne({ id: result.userID }).exec()
         user.scores += result.scores
 
         await user.save()

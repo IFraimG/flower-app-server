@@ -12,5 +12,6 @@ router.get("/getTasksList", passport.authenticate('jwt', { session: false }), ta
 router.get("/getAllTasks", passport.authenticate('jwt', { session: false }), taskController.getAllTasks)
 router.post("/takeTask", upload.array("img"), passport.authenticate('jwt', { session: false }), taskController.takeTask)
 router.delete("/cancelTakeTask", passport.authenticate('jwt', { session: false }), taskController.cancelTakeTask)
+router.get("/getTasksListWithUser", passport.authenticate('jwt', { session: false }), taskController.getTasksListWithUser)
 
 module.exports = router;

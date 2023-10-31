@@ -15,5 +15,8 @@ router.get("/findAuthorsEvents", passport.authenticate('jwt', {session: false}),
 router.get("/findNearestEventsByAuthorCoords", passport.authenticate("jwt", {session: false}), eventController.findNearestEventsByAuthorCoords)
 router.get("/getUsersFromEvents", passport.authenticate("jwt", {session: false}), eventController.getUsersFromEvents)
 router.get("/searchPosts", passport.authenticate("jwt", {session: false}), eventController.searchPosts)
+router.post("/create_comment", passport.authenticate("jwt", {session: false}), eventController.createComment)
+router.get("/get_comments", passport.authenticate("jwt", {session: false}), eventController.getCommentsList)
+router.delete("/delete_comment", passport.authenticate("jwt", {session: false}), eventController.deleteComment)
 
 module.exports = router;

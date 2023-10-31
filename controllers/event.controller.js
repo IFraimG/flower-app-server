@@ -1,7 +1,9 @@
 const Event = require("../models/Event")
 const Guide = require("../models/Guide")
 const User = require("../models/User")
+const Comment = require("../models/Comment")
 const generateRandomString = require("../utils/generateRandomString.js")
+const { format, differenceInDays, getDay, getMonth, getYear, parse } = require('date-fns'); 
 
 // {id, title, img, description, time, place, authorID, scores, maxUsers, currentUsers }
 module.exports.create = async (req, res) => {
@@ -123,6 +125,46 @@ module.exports.searchPosts = async (req, res) => {
     }
 
     res.send({ item: arr })
+  } catch (err) {
+    res.status(400).send(err.message)
+  }
+}
+
+module.exports.createComment = async (req, res) => {
+  try {
+    const currentDate = new Date();
+    const formattedDate = format(currentDate, 'dd.MM.yy');
+
+    let result = await Comment.create({
+      content: req.body.content,
+      authorID: req.body.authorID,
+      eventID: req.body.eventID,
+      id: generateRandomString(10),
+      dateOfCreated: formattedDate
+    })
+
+    await result.save()
+
+    res.send(result)
+  } catch (err) {
+    res.status(400).send(err.message)
+  }
+}
+
+module.exports.getCommentsList = async (req, res) => {
+  try {
+    let result = await Comment.find({ eventID: req.query.eventID }).exec()
+
+    res.send({ item: result })
+  } catch (err) {
+    res.status(400).send(err.message)
+  }
+}
+
+module.exports.deleteComment = async (req, res) => {
+  try {
+    await Comment.findOneAndDelete({ id: req.query.id }).exec()
+    res.status(204).send("Удалено")
   } catch (err) {
     res.status(400).send(err.message)
   }

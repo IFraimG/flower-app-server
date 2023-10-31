@@ -145,7 +145,9 @@ module.exports.createComment = async (req, res) => {
 
     await result.save()
 
-    res.send(result)
+    let user = await User.findOne({ id: req.body.authorID }).exec()
+
+    res.send({ ...result, login: user.name, photo: user.photo })
   } catch (err) {
     res.status(400).send(err.message)
   }

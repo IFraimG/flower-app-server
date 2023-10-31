@@ -14,5 +14,6 @@ router.get("/findEventsByAuthorID", passport.authenticate('jwt', {session: false
 router.get("/findAuthorsEvents", passport.authenticate('jwt', {session: false}), eventController.findAuthorsEvents)
 router.get("/findNearestEventsByAuthorCoords", passport.authenticate("jwt", {session: false}), eventController.findNearestEventsByAuthorCoords)
 router.get("/getUsersFromEvents", passport.authenticate("jwt", {session: false}), eventController.getUsersFromEvents)
+router.get("/searchPosts", passport.authenticate("jwt", {session: false}), eventController.searchPosts)
 
 module.exports = router;

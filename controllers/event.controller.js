@@ -1,4 +1,5 @@
 const Event = require("../models/Event")
+const Guide = require("../models/Guide")
 const User = require("../models/User")
 const generateRandomString = require("../utils/generateRandomString.js")
 
@@ -100,6 +101,24 @@ module.exports.getUsersFromEvents = async (req, res) => {
         let user = await User.findOne({ id: userID }).exec()
         if (user != null) arr.push(user)
       }
+    }
+
+    res.send({ item: arr })
+  } catch (err) {
+    res.status(400).send(err.message)
+  }
+}
+
+module.exports.searchPosts = async (req, res) => {
+  try {
+    let result = await Event.find({ title: /req.query.title/i }).exec()
+    let result2 = await Guide.find({ title: /req.query.title/i }).exec()
+    let arr = []
+    for (let event of result) {
+      arr.push({ title: event.title, image: event.place, type: "event", id: event.eventID })
+    }
+    for (let guide of result2) {
+      arr.push({ title: guide.title, image: guide.photo, type: "guide", id: guide.guideID })
     }
 
     res.send({ item: arr })

@@ -154,8 +154,13 @@ module.exports.createComment = async (req, res) => {
 module.exports.getCommentsList = async (req, res) => {
   try {
     let result = await Comment.find({ eventID: req.query.eventID }).exec()
+    let arr = []
+    for (let item of result) {
+      let user = await User.findOne({ id: item.authorID }).exec()
+      arr.push({ ...item, photo: user.photo, login: user.name })
+    }
 
-    res.send({ item: result })
+    res.send({ item: arr })
   } catch (err) {
     res.status(400).send(err.message)
   }

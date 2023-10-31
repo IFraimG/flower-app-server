@@ -111,8 +111,9 @@ module.exports.getUsersFromEvents = async (req, res) => {
 
 module.exports.searchPosts = async (req, res) => {
   try {
-    let result = await Event.find({ title: /req.query.title/i }).exec()
-    let result2 = await Guide.find({ title: /req.query.title/i }).exec()
+    const regex = new RegExp(req.query.title, 'i');
+    let result = await Event.find({ title: regex }).exec()
+    let result2 = await Guide.find({ title: regex }).exec()
     let arr = []
     for (let event of result) {
       arr.push({ title: event.title, image: event.place, type: "event", id: event.eventID })

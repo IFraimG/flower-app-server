@@ -143,11 +143,11 @@ module.exports.createComment = async (req, res) => {
       dateOfCreated: formattedDate
     })
 
-    await result.save()
+    let resResult = await result.save()
 
     let user = await User.findOne({ id: req.body.authorID }).exec()
 
-    res.send({ ...result, login: user.name, photo: user.photo })
+    res.send({ id: resResult.id, eventID: resResult.eventID, authorID: resResult.authorID, dateOfCreated: resResult.dateOfCreated, content: resResult.content, photo: user.photo, login: user.name })
   } catch (err) {
     res.status(400).send(err.message)
   }
@@ -159,7 +159,7 @@ module.exports.getCommentsList = async (req, res) => {
     let arr = []
     for (let item of result) {
       let user = await User.findOne({ id: item.authorID }).exec()
-      arr.push({ ...item, photo: user.photo, login: user.name })
+      arr.push({ id: item.id, eventID: item.eventID, authorID: item.authorID, dateOfCreated: item.dateOfCreated, content: item.content, photo: user.photo, login: user.name })
     }
 
     res.send({ item: arr })

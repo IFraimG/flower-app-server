@@ -88,15 +88,38 @@ module.exports.findAuthorsEvents = async (req, res) => {
   else res.status(404).send("Not Found")
 }
 
+function distance(lat1, lon1, lat2, lon2) {
+  const R = 6371;
+  const dLat = deg2rad(lat2 - lat1);
+  const dLon = deg2rad(lon2 - lon1);
+
+  const a = Math.sin(dLat / 2) * Math.sin(dLat / 2) + Math.cos(deg2rad(lat1)) * Math.cos(deg2rad(lat2)) * Math.sin(dLon / 2) * Math.sin(dLon / 2);
+  const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+  const distance = R * c;
+
+  return distance;
+}
+
+function deg2rad(deg) {
+  return deg * (Math.PI / 180);
+}
+
+function sortByDistance(userLat, userLong, array) {
+  let result = array.sort((a, b) => {
+    const distanceA = distance(userLat, userLong, a.lat, a.longt);
+    const distanceB = distance(userLat, userLong, b.lat, b.longt);
+
+    return distanceA - distanceB;
+  });
+
+  return result
+}
+
 module.exports.findNearestEventsByAuthorCoords = async (req, res) => {
   let result = await Event.find({}).exec()
-  if (result != null && (req.query.lat != 0 || req.query.longt != 0)) {
-    let arr = result.sort(item => {
-      return Math.sqrt(Math.pow(item.lat - req.query.lat, 2) + Math.pow(item.longt - req.query.longt, 2))
-    })
+  let arr = sortByDistance(req.query.lat, req.query.longt, result)
 
     res.send({item: arr})
-  } else res.send({ item: result })
 }
 
 module.exports.getUsersFromEvents = async (req, res) => {

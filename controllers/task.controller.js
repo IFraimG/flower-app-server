@@ -17,6 +17,12 @@ module.exports.create = async (req, res) => {
             dateOfCreated: formattedDate,
             taskID: generateRandomString(10) 
         })
+
+        let user = await User.findOne({ id: req.body.authorID }).exec()
+        user.scores -= req.body.scores
+
+        await user.save()
+
         let result = await task.save()
         res.send(result) 
     } catch (err) {

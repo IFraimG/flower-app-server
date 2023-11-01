@@ -33,7 +33,8 @@ module.exports.signup = async (req, res, next) => {
     password,
     name: req.body.name, 
     email: req.body.email, 
-    id: generateRandomString(10) })
+    id: generateRandomString(20),
+    login: generateRandomString(16) })
   let token = jwt.sign({
     sub: user.id,
     email: user.email,

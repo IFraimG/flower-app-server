@@ -62,6 +62,20 @@ module.exports.editProfile = async (req, res) => {
   }
 }
 
+module.exports.editLogin = async (req, res) => {
+  try {
+    let user = await User.findOne({id: req.user.id}).exec()
+
+    user.login = req.body.login
+    const result = await user.save()
+    
+    res.status(201).send(result)
+  } catch (error) {
+    console.log(error.message);
+    return res.status(400).send({message: error.message})
+  }
+}
+
 module.exports.addHabit = async (req, res) => {
   try {
     let user = await User.findOne({id: req.user.id}).exec()

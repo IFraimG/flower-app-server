@@ -23,6 +23,11 @@ module.exports.create = async (req, res) => {
         longt: parseFloat(req.body.longt),
         lat: parseFloat(req.body.lat)
     })
+    
+    let user = await User.findOne({ id: req.body.authorID }).exec()
+    user.scores -= Number.parseInt(req.body.scores)
+    await user.save()
+  
     let result = await event.save()
     res.send(result)
   } catch (err) {

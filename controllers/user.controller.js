@@ -21,10 +21,17 @@ module.exports.addPhoto = async (req, res) => {
 module.exports.changeScores = async (req, res) => {
   try {
     let user = await User.findOne({id: req.body.id}).exec()
-    user.scores = Number.parseInt(user.scores) + Number.parseInt(req.body.scores)
-  
-    let result = await user.save()
-    res.send(result)
+    let author = await User.findOne({ id: req.body.authorID }).exec()
+
+    if (Number.parseInt(author.scores) < Number.parseInt(req.body.scores)) res.status(418).send("I am a teapot")
+    else {
+      user.scores = Number.parseInt(user.scores) + Number.parseInt(req.body.scores)
+      author.scores -= Number.parseInt(req.body.scores)
+      let result = await user.save()
+      await author.save()
+      
+      res.send(result)
+    }
   } catch (err) {
     console.log(err.message);
     res.status(400).send("error")
@@ -68,7 +75,7 @@ module.exports.editLogin = async (req, res) => {
 
     user.login = req.body.login
     const result = await user.save()
-    
+
     res.status(201).send(result)
   } catch (error) {
     console.log(error.message);

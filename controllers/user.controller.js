@@ -1,4 +1,5 @@
 const User = require("../models/User")
+const Event = require("../models/Event")
 const bcrypt = require("bcrypt")
 const Habit = require("../models/Habit")
 
@@ -20,18 +21,18 @@ module.exports.addPhoto = async (req, res) => {
 
 module.exports.changeScores = async (req, res) => {
   try {
-    let user = await User.findOne({id: req.body.id}).exec()
-    let author = await User.findOne({ id: req.body.authorID }).exec()
+    let user = await User.findOne({id: req.body.id }).exec()
+    let event = await Event.findOne({ eventID: req.body.eventID }).exec()
+    
+    user.scores += (event.scores / event.maxUsers)
+    let index = event.usersList.findIndex(item => item == req.body.id)
+    if (index == -1) event.usersList.splice(index, 1)
 
-    if (Number.parseInt(author.scores) < Number.parseInt(req.body.scores)) res.status(418).send("I am a teapot")
-    else {
-      user.scores = Number.parseInt(user.scores) + Number.parseInt(req.body.scores)
-      author.scores -= Number.parseInt(req.body.scores)
-      let result = await user.save()
-      await author.save()
+    await event.save()
+    let result = await user.save()
+    await author.save()
       
-      res.send(result)
-    }
+    res.send(result)
   } catch (err) {
     console.log(err.message);
     res.status(400).send("error")

@@ -21,14 +21,14 @@ module.exports.addPhoto = async (req, res) => {
 
 module.exports.changeScores = async (req, res) => {
   try {
-    let user = await User.findOne({id: req.body.id }).exec()
+    let user = await User.findOne({ id: req.body.id }).exec()
     let event = await Event.findOne({ eventID: req.body.eventID }).exec()
     
     user.scores += (event.scores / event.maxUsers)
     let index = event.usersList.findIndex(item => item == req.body.id)
-    console.log(index);
     if (index != -1) {
       event.usersList.splice(index, 1)
+      console.log(event.usersList);
       event.currentUsers = event.currentUsers - 1
     }
 

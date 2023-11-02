@@ -146,7 +146,7 @@ module.exports.searchPosts = async (req, res) => {
     let result2 = await Guide.find({ title: regex }).exec()
     let arr = []
     for (let event of result) {
-      arr.push({ title: event.title, image: event.place, type: "event", id: event.eventID })
+      arr.push({ title: event.title, image: event.photo, type: "event", id: event.eventID })
     }
     for (let guide of result2) {
       arr.push({ title: guide.title, image: guide.photo, type: "guide", id: guide.guideID })

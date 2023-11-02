@@ -28,8 +28,8 @@ module.exports.changeScores = async (req, res) => {
     let index = event.usersList.findIndex(item => item == req.body.id)
     console.log(index);
     if (index != -1) {
-      event.usersList = event.usersList.splice(index, 1)
-      event.currentUsers -= 1
+      event.usersList.splice(index, 1)
+      event.currentUsers = event.currentUsers - 1
     }
 
     await event.save()

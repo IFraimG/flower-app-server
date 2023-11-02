@@ -30,7 +30,6 @@ module.exports.changeScores = async (req, res) => {
 
     await event.save()
     let result = await user.save()
-    await author.save()
       
     res.send(result)
   } catch (err) {

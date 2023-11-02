@@ -26,7 +26,7 @@ module.exports.changeScores = async (req, res) => {
     
     user.scores += (event.scores / event.maxUsers)
     let index = event.usersList.findIndex(item => item == req.body.id)
-    if (index == -1) event.usersList.splice(index, 1)
+    if (index == -1) event.usersList = event.usersList.splice(index, 1)
 
     await event.save()
     let result = await user.save()

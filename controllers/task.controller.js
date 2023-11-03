@@ -61,9 +61,18 @@ module.exports.delete = async (req, res) => {
 
 // {id}
 module.exports.getTaskByID = async (req, res) => {
-    let result = await Task.findOne({taskID: req.query.id}).exec()
-    if (result == null) res.status(404).send("Not Found")
-    else res.send(result)
+    try {
+        let result = await Task.findOne({taskID: req.query.id}).exec()
+        let user = await User.findOne({ id: result.authorID }).exec()
+        
+        if (result == null) res.status(404).send("Not Found")
+        else res.send({ title: result.title, description: result.description, scores: result.scores,
+            taskID: result.taskID, authorID: result.authorID, dateOfCreated: result.dateOfCreated, images: result.images,
+            userDescription: result.userDescription, userID: result.userID, authorName: user.name })
+    } catch (error) {
+        console.log(error.message);
+        res.status(400).send(error.message)
+    }
 }
 
 module.exports.getAllTasks = async (req, res) => {

@@ -69,7 +69,7 @@ module.exports.getHabitsByType = async (req, res) => {
     let arr = []
     let result = await Habit.find({type: req.query.type, authorID: req.query.authorID}).exec()
     for (let resResult of result) {
-      if (formattedDates.includes(resResult.dateOfCreated)) arr.push(result)
+      if (formattedDates.includes(resResult.dateOfCreated)) arr.push(resResult)
     }
 
     res.send({ item: arr })

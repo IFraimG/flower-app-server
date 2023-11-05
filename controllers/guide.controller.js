@@ -32,7 +32,11 @@ module.exports.delete = async (req, res) => {
 module.exports.getGuideByID = async (req, res) => {
   let result = await Guide.findOne({guideID: req.query.id}).exec()
   if (result == null) res.status(404).send("Not Found")
-  else res.send(result)
+  else {
+    let user = await User.findOne({ id: result.authorID }).exec()
+    res.send({ authorName: user.name, title: result.title, photo: result.photo, description: result.description,
+      authorID: result.authorID, source: result.source, guideID: result.guideID })
+  }
 }
 
 module.exports.getGuides = async (req, res) => {

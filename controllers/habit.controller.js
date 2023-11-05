@@ -1,6 +1,6 @@
 const Habit = require("../models/Habit")
 const generateRandomString = require("../utils/generateRandomString.js")
-const { format, differenceInDays, getDay, getMonth, getYear, parse } = require('date-fns'); 
+const { format, differenceInDays, getDay, getMonth, getYear, parse, eachDayOfInterval, startOfMonth, endOfMonth } = require('date-fns'); 
 
 module.exports.create = async (req, res) => {
   try {
@@ -59,6 +59,22 @@ module.exports.getHabitsByType = async (req, res) => {
 
       res.send({ item: arr })
     }
+  } else if (req.query.type == "monthly") {
+    const firstDayOfMonth = startOfMonth(new Date())
+    const lastDayOfMonth = endOfMonth(new Date())
+  
+    const dates = eachDayOfInterval({ start: firstDayOfMonth, end: lastDayOfMonth });
+    const formattedDates = dates.map(date => format(date, 'dd.MM.yy'));
+    
+    let arr = []
+    for (let formatDate of formattedDates) {
+      let result = await Habit.find({type: req.query.type, authorID: req.query.authorID, dateOfCreated: formatDate}).exec()
+      if (result != null) {
+        arr.push(...result)
+      }
+    } 
+
+    res.send(arr)
   }
 }
 

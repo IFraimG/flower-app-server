@@ -39,7 +39,7 @@ const http = require("http")
 const server = http.createServer(app)
 
 const Habit = require("./models/Habit")
-const generateRandomString = require("../utils/generateRandomString.js")
+const generateRandomString = require("./utils/generateRandomString.js")
 
 const cron = require('node-cron');
 const { parse, format, subDays, getISOWeek } = require('date-fns');

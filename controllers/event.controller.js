@@ -46,7 +46,14 @@ module.exports.delete = async (req, res) => {
 module.exports.getEventByID = async (req, res) => {
   let result = await Event.findOne({eventID: req.query.id}).exec()
   if (result == null) res.status(404).send("Not Found")
-  else res.send(result)
+  else {
+    let user = await User.findOne({ id: result.authorID }).exec()
+    if (user != null) res.send({ eventID: result.eventID, authorID: result.authorID, dateOfCreated: result.dateOfCreated,
+      title: result.title, photo: result.photo, authorName: user.name, description: result.description,
+      time: result.time, place: result.place, scores: result.scores, maxUsers: result.maxUsers, currentUsers: result.currentUsers,
+      usersList: result.usersList, lat: result.lat, longt: result.longt })
+    else res.send(result)
+  }
 }
 
 // {eventID}

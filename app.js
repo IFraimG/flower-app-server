@@ -39,18 +39,19 @@ const http = require("http")
 const server = http.createServer(app)
 
 const Habit = require("./models/Habit")
+const generateRandomString = require("../utils/generateRandomString.js")
 
 const cron = require('node-cron');
 const { parse, format, subDays, getISOWeek } = require('date-fns');
 const moment = require('moment-timezone');
 
-const moscowTime = moment.tz('13:17', 'HH:mm', 'Europe/Moscow');
+const moscowTime = moment.tz('00:18', 'HH:mm', 'Europe/Moscow');
 const utcTime = moscowTime.clone().utc();
 
 const schedule = `${utcTime.minute()} ${utcTime.hour()} * * *`;
 
 let foo = '0 0 * * *'
-cron.schedule(foo, () => {
+cron.schedule(schedule, () => {
     const currentDate = new Date();
     const datePrev = subDays(currentDate, 1)
     const previousDayString = format(datePrev, 'dd.MM.yy');
@@ -61,7 +62,7 @@ cron.schedule(foo, () => {
       if (habits != null) {
           habits.forEach(item => {
             if (item != null) {
-              let newHabit = { authorID: item.authorID, habitID: item.habitID, type: item.type, frequency: item.frequency, title: item.title, isDone: false, dateOfCreated: formattedDate }
+              let newHabit = { authorID: item.authorID, habitID: generateRandomString(20), type: item.type, frequency: item.frequency, title: item.title, isDone: false, dateOfCreated: formattedDate }
               Habit.create(newHabit).then(res => res.save())
             }
           })

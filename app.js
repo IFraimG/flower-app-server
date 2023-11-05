@@ -51,7 +51,7 @@ const utcTime = moscowTime.clone().utc();
 const schedule = `${utcTime.minute()} ${utcTime.hour()} * * *`;
 
 let foo = '0 0 * * *'
-cron.schedule(schedule, () => {
+cron.schedule(foo, () => {
     const currentDate = new Date();
     const datePrev = subDays(currentDate, 1)
     const previousDayString = format(datePrev, 'dd.MM.yy');
@@ -81,7 +81,7 @@ cron.schedule('0 0 * * 1', () => {
             const date1 = parse(item.dateOfCreated, 'dd.MM.yy', new Date());
             const previousWeekNumber = getISOWeek(date1)
             if (previousWeekNumber == getISOWeek(currentDate) - 1) {
-                let newItem = { ...item, dateOfCreated: formattedDate, isDone: false }
+                let newItem = { ...item, habitID: generateRandomString(20), dateOfCreated: formattedDate, isDone: false }
                 Habit.create(newItem).then(res1 => res1.save())
             }
           }

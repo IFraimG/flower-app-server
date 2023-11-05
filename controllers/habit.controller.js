@@ -67,7 +67,7 @@ module.exports.getHabitsByType = async (req, res) => {
     const formattedDates = dates.map(date => format(date, 'dd.MM.yy'));
     
     let arr = []
-    let result = await Habit.find({type: req.query.type, authorID: req.query.authorID, dateOfCreated: formatDate}).exec()
+    let result = await Habit.find({type: req.query.type, authorID: req.query.authorID}).exec()
     for (let resResult of result) {
       if (resResult.dateOfCreated in formattedDates) arr.push(result)
     }

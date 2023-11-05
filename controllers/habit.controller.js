@@ -74,7 +74,7 @@ module.exports.getHabitsByType = async (req, res) => {
       }
     } 
 
-    res.send(arr)
+    res.send({ item: arr })
   }
 }
 

@@ -61,9 +61,13 @@ module.exports.addUserToEvent = async (req, res) => {
   let result = await Event.findOne({eventID: req.body.eventID}).exec()
   if (result == null) res.status(404).send("Not Found")
   else {
-    result.usersList.push(req.body.authorID)
-    await result.save()
-    res.send(result)
+    if (result.currentUsers >= result.maxUsers) res.status(400).send("Много людей")
+    else {
+      result.usersList.push(req.body.authorID)
+      result.currentUsers += 1
+      await result.save()
+      res.send(result)
+    }
   }
 }
 
@@ -72,7 +76,10 @@ module.exports.refusePeople = async (req, res) => {
   if (result == null) res.status(404).send("Not Found")
   else {
     let index = result.usersList.findIndex(item => item == req.body.authorID)
-    if (index != -1) result.usersList.splice(index, 1)
+    if (index != -1) {
+      result.usersList.splice(index, 1)
+      result.currentUsers -= 1
+    }
     await result.save()
     res.send(result)
   }
